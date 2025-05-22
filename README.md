@@ -78,6 +78,9 @@ In the coming days and months, the following concepts will be explored:
 * Exploration of Model Predictive Control (MPC) approaches.
 
 Please note that some of the committed C++ functions and scripts originate from pre-existing open-source libraries and have not yet been implemented or transcoded from Matlab.
+
+![image](https://github.com/user-attachments/assets/a9a7d3c0-985f-484a-aded-0fd80257b27b)
+
  
 
 
