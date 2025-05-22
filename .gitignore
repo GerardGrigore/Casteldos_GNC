@@ -1,0 +1,42 @@
+# MATLAB backup and autosave files
+*.asv
+*.autosave
+
+# Simulink compiled files
+*.slxc
+*.slx.autosave
+*.mdl.autosave
+
+# MATLAB cache and preferences
+matlabprefs.mat
+matlabsettings.mat
+*.mlappinstall
+
+# Simulink cache and code generation
+slprj/
+sfunctools/
+codegen/
+_work/
+*.mex*
+
+# Project-specific files
+*.mldatx
+*.mexa64
+*.mexw64
+*.mexmaci64
+
+# Logs and reports
+*.log
+*.rpt
+*.txt~
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python cache (if any Python used)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
