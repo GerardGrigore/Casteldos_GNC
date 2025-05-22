@@ -1,0 +1,39 @@
+Composition of the 'Simulation_Case_6' closed loop simulation:
+
+- This simulator contains approximately the same information and functionnalities than
+  its previous version Simulator_Case_5. The novelty is in the wind perturbation addition
+  and a wind estimator allowing to take into account the wind in the rudder action of 
+  the corrector.
+
+- An Optimal Linear Quadratic (LQ) was designed to allow a comparison with the PIDF
+  controller type.
+
+Neglected elements:
+
+- No actuator model.
+
+Conclusions:
+------------
+
+- LQ Controller used for tracking presents indeniably better performances than the PIDF controller.
+  Additionnaly, the constraints of angular maximum/minimum and angular rate maximum/minimum for the 
+  rudder are well respected. One can admire the quality of the filtered heading using the identification
+  algorithm alongside with the Extended Kalman Filter.
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+

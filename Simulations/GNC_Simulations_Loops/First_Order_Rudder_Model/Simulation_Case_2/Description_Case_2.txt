@@ -1,0 +1,68 @@
+Composition of the 'Simulation_Case_2' closed loop simulation:
+
+- Guidance Waypoints-based algorithm.
+- Ideal Controller based only on a PIDF tuning: no actuators.
+- First-order Nomoto ship model relating the rudder angle to the heading.
+- Realistic Navigation: IMU, Compass and GPS sensors modeling.
+- Realistic wave high frequency perturbation.
+- Continuous-time domain: no discretization.
+
+Neglected elements:
+
+- Perturbations: wind & current.
+- The actuator model.
+- The filters.
+- The non-linearities (such as actuator saturation).
+- The discretization.
+
+The goal here was to have a more representativeness by including more complex
+details in the loop such as environmental perturbations.
+
+Conclusions:
+------------
+
+The used sensors were added in the loop: the GPS, the IMU and the magnetic compass. The importance
+of a good IMU alignment and sensor calibration has been understood. For the IMU, the sensor has not
+been designed to return directly the heading (with respect to Noth). This sensor only returns the attitude
+of the ship with respect to an initialized frame. Therefore: it is important, if one wants to measure the
+heading using the IMU, to initially align it to a reference frame suitable for returning heading angles.
+
+On the other hand, the problematic of continuous time was also tackled, as well as the filtering of 
+wave perturbation motion. Indeed, the perturbation induced by the waves is not easy to resolve.
+The proposed Kalman filter and sensor fusion in this simulation case only deal with sensor noise 
+attenuation and measurements fusion (fusion of the heading provided by the GPS and the one from 
+the magnetic compass).
+
+Additionally, the problem of how the inputs of the wave model affects the final heading has also been understood.
+The next simulation case is reserved for the special treatement of the wave perturbation filtering.
+An estimation based on a Kalman Filtering observer has been implemented to "divide" the measured
+heading into two heading components: one coming from the low frequency action of the controller (that
+we want to keep and send back to the controller). And one from the wave induced motion, that we do
+not want to send back to the controller.
+
+NOTA - At that time, a continuous-time environment was still used for the simulations. Therefore, a
+       missunderstanding can bee seen through the parameter 'Time_Elapsed_Simulation' in the discrete
+       time implemented Kalman filter equations indeed. Since to integration step has been fixes, the
+       choice has been made to consider it as the delta time elapsed during two time step of the 
+       Simulink simulation (which is obviously different that the real actual time step between two 
+       estimations of the state dimensioned by the frequency of the sensors). At this time, a bad under-
+       standing of the role of this parameter has been done. This has been corrected in simulators 
+       embedding a discrete-time environement (versions 4 and further).
+
+Eventually, the transfer function used to simulate wind is not accurate enough. A wind estimator and
+generator has been created and implemented in the next version of simulators.
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+

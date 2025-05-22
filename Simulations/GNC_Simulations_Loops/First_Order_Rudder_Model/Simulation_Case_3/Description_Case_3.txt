@@ -1,0 +1,64 @@
+Composition of the 'Simulation_Case_3' closed loop simulation:
+
+- Every blocks have been discretized and are called at the samplig period fixed
+  in the beginning of the script Parametrization_Simulation_Case_3.m.
+- The Guidance is in its simplest form possible: a step order heading aimed.
+- The controller is a discrete-time tuned PIDF.
+- A non-linearity was added to anticipate the actuator effect just after
+  the controller: the amplitude of the rudder angle has been limited to around
+  +-50°.
+- The Navigation is supposed to be composed of a unique sensor returning the 
+  total heading composed by a low frequency heading and a high wave-induced
+  heading perturbation.
+- A Kalman Filter embedding a model of the waves has been created in order to
+  estimate the wave induced heading and to separate the real low frequency
+  heading of the perturbed induced heading. It is supposed that the frequency
+  (pulsation) and the damping factor of the waves are known. 
+
+Neglected elements:
+
+- The Guidance algorithm was omitted.
+- The 2 DoF in position were avoided.
+- The model of the sensors and actuators were omitted.
+- An Identification (ARMA) method has been omitted (for the waves parameters).
+
+The goal here was to really be able to tackle the problematic of wave perturbation
+filtering to provide the automatic pilot with a realistic value of heading without
+the wave components. It turns out that the algorithm performs very well, and one 
+can see that the estimation of the wave perturbation is very close to the original
+created waveform.
+
+Conclusions:
+------------
+
+The estimation algorithm performs well in presence of a known wave perturbation 
+(in terms of pulsation & damping factor) and a sensor noise. The control behaves 
+healthily even with a saturation in the loop (but at a sufficiently high threshold).
+
+The following points will be covered in the next simulation case:
+- To the previously unique sensor (magnetic compass) returning the value of the heading,
+  add the positions returned by the GPS. Hence; addition of the GPS model in the loop.
+- Therefore, implement a non linear Kalman Filter (EKF) to account for the position
+  filtering and estimation. This will result in an addition of 2 mode DoF.
+- Addition of the Guidance algorithm in the loop.
+- In the next simulation cases: ARMA identification algorithm to estimate, in function
+  of heading measurements, the pulsation and damping factor of the wave model.
+- For even further simulation case: adding the wind perturbation, a wind estimator and
+  then account for the wind estimate in the structure of the controller.
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+

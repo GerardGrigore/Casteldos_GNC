@@ -1,0 +1,61 @@
+Composition of the 'Simulation_Case_6' closed loop simulation:
+
+- This simulator contains approximately the same information and functionnalities than
+  its previous version 'Simulation_Case_4'. The novelty is in the wind perturbation addition
+  and a wind estimator allowing to take into account the wind in the rudder action of 
+  the corrector.
+
+Neglected elements:
+
+- No actuator model.
+
+Conclusions:
+------------
+
+- If the wind perturbation is activated, injected into the system but not estimated nor
+  taken into account in the rudder command controller; the system still behave well but with
+  a more important amount of parasite in the heading.
+
+- If the wind perturbation is activated, injected into the system and estimated perfectly
+  (using a Go to/From), then it is possible to inject it in the PIDF controller and impose 
+  that Rudder_Commanded = Rudder_PIDF - Rudder_Induced_Wind.
+
+- The major problem here is that the wind effects is created using a torque wind profile. It is
+  then converted into heading value and injected into the heading that goes outside of the 
+  Ship trasnfer function. However, that is not physically realistic. The profile of heading
+  induced by the wind suggests an increasing value (up to angles values >>> 2*pi) in a polynomial
+  function of time.
+  There is a need to be able to model an impact of the wind on the system in terms of local
+  torque creation. The fact is that this occurs "inside" the Nomoto transfer function and that
+  it must be modified (maybe to be of MISO function (input 1: wind, input 2: rudder angle)).
+
+  ==> A solution: Performance/Robustness tested by dispersing the values of N_Delta. Indeed,
+                  by knowing an estimate of Torque_Wind, it is mathematically possible to state
+                  that Rudder_Induced_Wind = Estimate_Torque_Wind/N_Delta. Hence, possible
+                  to apply in the controller: Rudder_Commanded = Rudder_PIDF - Rudder_Induced_Wind.
+
+- In reality: a bias term accounting for the wind has been added in the Kalman filter. In
+  addition, by setting up a very high value of wind velocity, performance can be assured.
+  However, this is done by not dispersing the value of N_Delta. We can see that if we increase
+  this value of hydrodynamic coefficient, with very important winds, the saturated controller
+  is unable to produce a soltion. 
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+

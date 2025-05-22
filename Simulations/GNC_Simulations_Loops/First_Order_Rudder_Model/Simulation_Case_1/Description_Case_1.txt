@@ -1,0 +1,34 @@
+Composition of the 'Simulation_Case_1' closed loop simulation:
+
+- Guidance Waypoints-based algorithm.
+- Ideal Controller based only on a PIDF tuning: no actuators.
+- First-order Nomoto ship model relating the rudder angle to the heading.
+- Ideal Navigation: no sensors.
+- Ideal environment: no perturbation considered.
+- Continuous-time domain: no discretization.
+
+Neglected elements:
+
+- Perturbations: wind, waves & current.
+- The actuator model.
+- The sensor model.
+- The filters.
+- The non-linearities (such as actuator saturation).
+- The discretization.
+
+The goal here was to have a rapid look at the behaviour of the Guidance algorithm and be
+able to tune a first version of the higher loop controller. 
+
+Conclusions:
+------------
+
+Excellent behaviour of the control and quasi-perfect Guidance heading generation.
+The goal of the Simulation_Case_2 will be to add to the loop the sensor models and
+create the Kalman filter to clean and fuse the data. The perturbations will also
+be added: the wind and the waves. Their effect will be studied.
+
+
+
+
+
+
