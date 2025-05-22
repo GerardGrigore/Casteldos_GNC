@@ -15,10 +15,10 @@ Neglected elements:
 Conclusions:
 ------------
 
-- LQ Controller used for tracking presents indeniably better performances than the PIDF controller.
-  Additionnaly, the constraints of angular maximum/minimum and angular rate maximum/minimum for the 
-  rudder are well respected. One can admire the quality of the filtered heading using the identification
-  algorithm alongside with the Extended Kalman Filter.
+LQ Controller used for tracking presents indeniably better performances than the PIDF controller.
+Additionnaly, the constraints of angular maximum/minimum and angular rate maximum/minimum for the 
+rudder are well respected. One can admire the quality of the filtered heading using the identification
+algorithm alongside with the Extended Kalman Filter.
 
 
 
