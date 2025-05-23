@@ -42,15 +42,6 @@ Control_Inputs_Initial = 0; % Process model considered as without input influenc
 % Chose the step time, it shall be aligned with HW specification:
 Time_Step_HW = 1;
 
-% NOTA:
-% When calling the EKF function such that Estimates = EKF(), to get the
-% proper evaluated functions used inside (Jacobians for example), then use
-% the notation Estimates = EKF(Jacobian(Variable1,Variable2)).
-% If it's not working, then delete the function as an input of the EKF,
-% call it directly inside the EKF function. But pay attention to get the
-% good inputs inside the EKF function.
-% /!\ Same thing for the Function_Process_Model inside the EKF /!\.
-
 % ----------------------------------------------------------------
 % 2) Measurement & Innovation model:
 % ----------------------------------------------------------------
