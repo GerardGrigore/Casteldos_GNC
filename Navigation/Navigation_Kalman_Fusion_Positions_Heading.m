@@ -8,15 +8,11 @@ function [Position_Ship_X_Current_Filtered,...
                                                                               Velocity_Ship_Mean,...
                                                                               Time_Sampling)
 
-% This function serves as a filterting and data fusion to provide the ship
+% This function serves as a filtering and data fusion to provide the ship
 % with the right heading data.
 
 persistent State_Model_Prediction;
 persistent Covariance_Model_Prediction;
-
-% Openwork modifications:
-% - Include the position given by the IMU if needed.
-% - Complexification of the state model.
 
 % ----------------------------------------------------------------
 % 1) Definition of the process model:
