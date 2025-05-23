@@ -10,7 +10,7 @@ Controlling the heading, that is the orientation of the ship angle with respect 
 As a result, a system analysis was initially carried out to determine the main hardware components required to meet the functional requirements. A brief summary is as follows:
 * Navigation: The position and heading of the vessel will be obtained through sensor fusion using an IMU, a compass, and a GPS (three types of sensors).
 * Guidance: The desired heading, based on a predefined onboard trajectory and the navigation data, will be computed in real time by a guidance algorithm.
-* Control: Two control loops will be implemented:
+* Control: Two loops will be implemented to actively control the displacement of a linear electromechanical actuator that will rotate the rudder bar:
   * Outer control loop: Generates the commanded rudder angle needed to follow the desired heading.
   * Inner control loop: Precisely controls the linear displacement of the actuator moving the rudder to achieve the commanded angle.
  
@@ -24,18 +24,6 @@ In the coming days and months, the objective will be to produce three documents:
 
 The simulators were constructed in Matlab/Simulink (version 2024). 
 ![image](https://github.com/user-attachments/assets/8a226e1f-9467-4772-9cb0-c931db80cadd)
-
-The main choices and explored notions were the following:
-* Navigation:
-  * Position and heading estimation, fusion and filtering: Extended Kalman Filter based on a non-linear model of the motion of the ship.
-  * High-frequency heading perturbations due to wave motion filtering: Observer based on a Kalman Filter embedding a frequency model of the wave motion.
-  * Online estimation of the wave frequency and damping: Two-stage recursive Extended Least Squares Identification Algorithm ARMA.
-  * Numerical and discretized filters to enhance the quality of the heading to be sent to the Controller and the Guidance algorithms.
-* Control:
-  * Discretized Proportional Integral Derivative Filtered (PIDF) anti wind-up embedded online algorithm. The tuning has been made according to temporal and
-    frequency requirements and constraints.
-  * Optimal Linear and Quadratic (LQ) controller. The tuning has been made on a simplified version of the simulator but performs very healthily inside the
-    overall simulator.
 
 The main design choices and explored concepts were as follows:
 * Navigation: (Signal-Processing, Statistics & Probabilities)

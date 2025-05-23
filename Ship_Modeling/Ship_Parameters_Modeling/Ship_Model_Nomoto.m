@@ -4,7 +4,7 @@
 
 % This script serves as a launch script allowing to obtain several physical
 % parameters about the ship as well as the hydrodynamics derivatives. This
-% contains the model of the ship's yaw dynamics in fuction of the input
+% contains the model of the ship's yaw dynamics in function of the input
 % rudder angle.
 
 % ******************************************************************
