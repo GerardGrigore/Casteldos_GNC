@@ -42,26 +42,26 @@ end
 % Collect the output data:
 Measurement_Current = Heading_Wave_High_Frequency_Estimated;
 
-% Compute Phi_S and Phi_N_Estimated:
+% Compute the information vectors:
 Information_Left_Vector_Transpose_Current = [-Measurement_Previous,-Measurement_Previous_Previous];
 Information_Left_Vector_Current = Information_Left_Vector_Transpose_Current';
 Information_Right_Vector_Current_Estimated = White_Noise_Process_Previous_Estimate;
 
-% Compute the gain vector L_s and the covariance matrix P_s:
+% Compute the gain vector and the covariance matrix:
 Gain_Vector_Left_Current = (Covariance_Matrix_Left_Previous_Estimate*Information_Left_Vector_Current)/(1 + Information_Left_Vector_Transpose_Current*Covariance_Matrix_Left_Previous_Estimate*Information_Left_Vector_Current);
 Covariance_Matrix_Left_Current = (eye(2) - Gain_Vector_Left_Current*Information_Left_Vector_Transpose_Current)*Covariance_Matrix_Left_Previous_Estimate;
 
-% Compute the gain vector L_n and the covariance matrix P_n:
+% Compute the gain vector and the covariance matrix:
 Gain_Vector_Right_Current = (Covariance_Matrix_Right_Previous_Estimate*Information_Right_Vector_Current_Estimated)/( 1 + Covariance_Matrix_Right_Previous_Estimate*Information_Right_Vector_Current_Estimated^2);
 Covariance_Matrix_Right_Current = (1 - Gain_Vector_Right_Current*Information_Right_Vector_Current_Estimated)*Covariance_Matrix_Right_Previous_Estimate;
 
-% Update the parameter estimates Theta_S and Theta_N:
+% Update the parameter estimates:
 Parameter_To_Estimate_Left_Current_Estimate = Parameters_To_Estimate_Left_Previous_Estimate + Gain_Vector_Left_Current*(Measurement_Current - Information_Right_Vector_Current_Estimated*Parameters_To_Estimate_Right_Previous_Estimate - ...
                                               Information_Left_Vector_Transpose_Current*Parameters_To_Estimate_Left_Previous_Estimate);
 Parameter_To_Estimate_Right_Current_Estimate = Parameters_To_Estimate_Right_Previous_Estimate + Gain_Vector_Right_Current*(Measurement_Current - Information_Left_Vector_Transpose_Current*Parameters_To_Estimate_Left_Previous_Estimate - ...
                                                Information_Right_Vector_Current_Estimated*Parameters_To_Estimate_Right_Previous_Estimate);
 
-% Compute v:
+% Compute the white noise:
 Information_Vector_Total_Transpose_Estimated = [Information_Left_Vector_Transpose_Current,Information_Right_Vector_Current_Estimated];
 Parameter_To_Estimate_Total_Current_Estimated = [Parameter_To_Estimate_Left_Current_Estimate',Parameter_To_Estimate_Right_Current_Estimate];
 Parameter_Total_Estimated = Parameter_To_Estimate_Total_Current_Estimated';
