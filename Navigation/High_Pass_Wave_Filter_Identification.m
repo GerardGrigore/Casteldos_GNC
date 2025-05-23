@@ -6,7 +6,7 @@ function Heading_Filtered_Ouput_Current = High_Pass_Wave_Filter_Identification(H
 
 % Filter parameters:
 Pulsation_Filter_Wave = 0.6;
-Time_Filter_Wave = 1/Pulsation_Filter_Wave;
+Time_Filter_Wave = (2*pi)/Pulsation_Filter_Wave;
 
 % Persistents definition:
 persistent Heading_Unfiltered_Input_Previous;
