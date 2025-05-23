@@ -10,7 +10,7 @@ Controlling the heading, that is the orientation of the ship angle with respect 
 As a result, a system analysis was initially carried out to determine the main hardware components required to meet the functional requirements. A brief summary is as follows:
 * Navigation: The position and heading of the vessel will be obtained through sensor fusion using an IMU, a compass, and a GPS (three types of sensors).
 * Guidance: The desired heading, based on a predefined onboard trajectory and the navigation data, will be computed in real time by a guidance algorithm.
-* Control: Two control loops will be implemented:
+* Control: Two loops will be implemented to actively control the displacement of a linear electromechanical actuator that will rotate the rudder bar:
   * Outer control loop: Generates the commanded rudder angle needed to follow the desired heading.
   * Inner control loop: Precisely controls the linear displacement of the actuator moving the rudder to achieve the commanded angle.
  
