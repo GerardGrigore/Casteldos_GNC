@@ -2,6 +2,9 @@ function ENU_Vector = LLA_To_ENU(Latitude_Current,Longitude_Current,Altitude_Cur
                                  Latitude_Reference,Longitude_Reference,Altitude_Reference,...
                                  Semi_Major_Axis,Flattening)
 
+% This function is used to convert some coordinates initially expressed in the LLA (Latitude,
+% longitude and altitude) frame to the ENU (East, North and Up) frame.
+
 % LLA components definition for the current point:
 Phi_Current = Latitude_Current*pi/180;
 Lambda_Current = Longitude_Current*pi/180;
