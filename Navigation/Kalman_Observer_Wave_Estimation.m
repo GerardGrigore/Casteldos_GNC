@@ -26,8 +26,8 @@ persistent Rudder_Angle_Commanded_Prev;
 Time_Integration = Time_Sampling;
 
 % At the beginning of the Identification technique, the estimated wave
-% pulsation will be very high, these values shall not be took in
-% consideration. Need to way for around 50 seconds to be sure that the
+% pulsation will be very high and inacurate, these values shall not be took in
+% consideration. Need to way for around 500 seconds to be sure that the
 % identification went well.
 % Wave_Pulsation_Estimated = 0.7;
 if Time_Current > 500
