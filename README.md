@@ -64,6 +64,7 @@ In the coming days and months, the following concepts will be explored:
 * Analysis of the behavior of the hardware intended for use in the control loop.
 * Implementation of Hardware-in-the-Loop (HIL) simulations.
 * Exploration of Model Predictive Control (MPC) approaches.
+* Robust Control for uncertain plant modeling and control.
 
 Please note that some of the committed C++ functions and scripts originate from pre-existing open-source libraries and have not yet been implemented or transcoded from Matlab.
 
