@@ -1,6 +1,6 @@
-# Project description
+# Project description :rowboat::boat: 
 
-## Motivations
+## Motivations :scroll:
 
 This project aims to design a complete Guidance, Navigation, and Control (GNC) system to automatically pilot a pleasure boat.
 The ship has no sails, and its propulsion relies solely on a diesel engine whose direction can be controlled via a rudder bar.
@@ -20,7 +20,7 @@ In the coming days and months, the objective will be to produce three documents:
 * A detailed description of the simulator and the equations of motion of the vessel.
 * A technical performance report that will simulate a mission and evaluate the performance and robustness of the developed algorithms.
 
-## Numerical simulations & algorithms design
+## Numerical simulations & algorithms design :computer:
 
 The simulators were constructed in Matlab/Simulink (version 2024). 
 ![image](https://github.com/user-attachments/assets/8a226e1f-9467-4772-9cb0-c931db80cadd)
@@ -40,7 +40,7 @@ The main design choices and explored concepts were as follows:
   * Waypoint-based trajectory generation.
   * Curved-Path Guidance.
 
-## Structure of the repository
+## Structure of the repository :books:
 
 This repository follows an incremental approach for the design of both the simulator and the associated algorithms. To get started, download all the project folders. The simulators can be accessed via the file named Simulations (the last item in the repository structure shown below).
 
@@ -56,7 +56,7 @@ For each subfolder corresponding to a simulation case number i, the following el
 
 **For a complete and full description of the algorithms, mathematical models and simulators, technical descriptions and justification files will be uploaded soon.**
 
-## Evolutions
+## Evolutions :arrow_upper_right:
 
 In the coming days and months, the following concepts will be explored:
 * Dispersion and robustness simulations to validate the theoretical algorithms.
