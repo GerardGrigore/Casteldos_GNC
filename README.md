@@ -25,7 +25,7 @@ In the coming days and months, the objective will be to produce three documents:
 The simulators were constructed in Matlab/Simulink (version 2024). 
 ![image](https://github.com/user-attachments/assets/8a226e1f-9467-4772-9cb0-c931db80cadd)
 
-The main design choices and explored concepts were as follows:
+The main design choices and so far explored concepts are as follows:
 * Navigation: (Signal-Processing, Statistics & Probabilities)
   * Position and heading estimation, fusion, and filtering: Implemented using an Extended Kalman Filter based on a nonlinear model of the motion of the vessel.
   * Filtering of high-frequency heading perturbations due to wave motion: Developed an observer based on a Kalman Filter incorporating a wave motion frequency model.
