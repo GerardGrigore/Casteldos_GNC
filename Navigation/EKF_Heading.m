@@ -26,18 +26,20 @@ Covariance_Prediction_Current = Jacobian_State_Process_Model*Covariance_States_P
 
 % Measurement update equations:
 % Kalman gain value:
-% /!\ Numerical protection for inversion.
 Kalman_Gain_Current = Covariance_Prediction_Current*Measurement_Model_Matrix'*inv(Measurement_Model_Matrix*...
     Covariance_Prediction_Current*Measurement_Model_Matrix' + Measurement_Covariance_Matrix);
 % State update using measurements and apriori prediction estimate:
-State_Aposteriori_Current = State_Apriori_Prediction_Current + Kalman_Gain_Current*(Measurement_Current - ...
-    Measurement_Model_Matrix*State_Apriori_Prediction_Current);
+% Innovation function:
+Innovation_Current = Measurement_Current -  Measurement_Model_Matrix*State_Apriori_Prediction_Current;
+% Normalization of the heading:
+Innovation_Current(3) = mod(Innovation_Current(3) + pi, 2*pi) - pi;
+State_Aposteriori_Current = State_Apriori_Prediction_Current + Kalman_Gain_Current*Innovation_Current;
+% Final normalization of the heading angle:
+State_Aposteriori_Current(3) = mod(State_Aposteriori_Current(3), 2*pi);
+
 % Update of the covariance matrix:
 Dimension_Eye = size(Kalman_Gain_Current*Measurement_Model_Matrix,1);
 Covariance_Aposteriori_Current = (eye(Dimension_Eye) - Kalman_Gain_Current*Measurement_Model_Matrix)*Covariance_Prediction_Current;
-% Try the second calculation method:
-% Covariance_Aposteriori_Current = Covariance_Prediction_Current - Kalman_Gain_Current*(Measurement_Model_Matrix*Covariance_Prediction_Current*...
-%                                  Measurement_Model_Matrix' + Measurement_Covariance_Matrix)*Kalman_Gain_Current;
 
 end
 

@@ -25,7 +25,7 @@ Wind_Angle_Generated = Aimed_Wind_Angle + Sigma_Wind_Angle*randn();
 
 % Then generate typical velocity wind.
 % Based on Beaufort Wind Force scale:
-Aimed_Velocity_Wind = 30;
+Aimed_Velocity_Wind = 5;
 Sigma_Velocity_Wind = 0.2;
 Wind_Velocity_Generated = Aimed_Velocity_Wind + Sigma_Velocity_Wind*randn();
 

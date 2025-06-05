@@ -18,7 +18,7 @@ clc;
 % * 2 DoF added: positions of the ship.
 
 % ---Enter the path of the root Casteldos_GNC_Software folder:-------
-Path_Casteldos_GNC_Software = "C:\Users\gerar\Desktop\Bureau bis\";
+Path_Casteldos_GNC_Software = "C:\Users\gerar\Documents\GitHub\";
 % -------------------------------------------------------------------
 
 % Discrete time features:
@@ -28,27 +28,27 @@ Time_Guidance_Sampling = 20; % Guidance algorithm sampling time.
 
 % Parameters importation:
 % Parameters of the ship, hydrodynamics coefficients and Nomoto's transfer functions:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Ship_Modeling\Ship_Parameters_Modeling\Ship_Model_Nomoto.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Ship_Modeling\Ship_Parameters_Modeling\Ship_Model_Nomoto.m");
 % PIDF Synthesis launch:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Control\Controller\PID\PID_Tuning_Case_2.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\PID_Tuning_Case_2.m");
 % Wind generation:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Environment\Wind\Wind_Model.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Environment\Wind\Wind_Model.m");
 % Waves generation:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Environment\Waves\Waves_Model.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Environment\Waves\Waves_Model.m");
 % Trajectory generation:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Guidance\Trajectories\Ile_De_La_Nadiere\Mission_Waypoint_Generation_In_ENU.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Guidance\Trajectories\Ile_De_La_Nadiere\Mission_Waypoint_Generation_In_ENU.m");
 
 % Repositories sourcing for algorithms:
 % Guidance function:
-addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Guidance\Guidance_Algorithms\Waypoints_Based"));
+addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Guidance\Guidance_Algorithms\Waypoints_Based"));
 % LLA conversion to ENU coordinates function:
-addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Guidance\Trajectories\Ile_De_La_Nadiere"));
+addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Guidance\Trajectories\Ile_De_La_Nadiere"));
 % Wind generator and estimator:
-addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Environment\Wind"));
+addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Environment\Wind"));
 % ARMA identification, Sensor fusion and Wave observer algorithms:
-addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Navigation"));
+addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Navigation"));
 % Anti Wind-Up discretized PIDF control algorithm:
-addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Control\Saturation_Control"));
+addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Saturation_Control"));
 
 % Initial states declaration:
 Reference_Point_Port_Mahon = [43.059023,3.002915,0];

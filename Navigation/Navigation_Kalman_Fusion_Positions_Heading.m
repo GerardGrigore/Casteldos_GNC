@@ -2,11 +2,11 @@ function [Position_Ship_X_Current_Filtered,...
           Position_Ship_Y_Current_Filtered,...
           Heading_Ship_Current_Filtered,...
           Covariance_Error_Vector_Current]  = Navigation_Kalman_Fusion_Positions_Heading(Position_Ship_X_Current_GPS,...
-                                                                              Position_Ship_Y_Current_GPS,...
-                                                                              Heading_GPS,...
-                                                                              Heading_Magnetometer,...
-                                                                              Velocity_Ship_Mean,...
-                                                                              Time_Sampling)
+                                                                                         Position_Ship_Y_Current_GPS,...
+                                                                                         Heading_GPS,...
+                                                                                         Heading_Magnetometer,...
+                                                                                         Velocity_Ship_Mean,...
+                                                                                         Time_Sampling)
 
 % This function serves as a filtering and data fusion to provide the ship
 % with the right heading data.
@@ -28,7 +28,6 @@ Position_Ship_X_Current_Model = Position_Ship_X_Current_GPS;
 Position_Ship_Y_Current_Model = Position_Ship_Y_Current_GPS;
 Heading_Current_Model = Heading_Magnetometer;
 Velocity_Ship_Model = Velocity_Ship_Mean;
-
 States_Initial_Model = [Position_Ship_X_Current_Model;...
                         Position_Ship_Y_Current_Model;...
                         Heading_Current_Model;...
@@ -39,7 +38,7 @@ States_Initial_Model = [Position_Ship_X_Current_Model;...
 % used model:
 Variance_Position_X = 5;
 Variance_Position_Y = 5;
-Variance_Heading = (15*pi/180);
+Variance_Heading = (2*pi/180);
 Variance_Velocity = 0.5;
 Process_Model_Covariance_Matrix = [Variance_Position_X^2 0 0 0;
                                    0 Variance_Position_Y^2 0 0;
@@ -74,18 +73,11 @@ Time_Step_Integration = Time_Sampling;
 % and Variance_Heading for Variance_Heading_GNSS used in the process model section:
 % To be aligned with the specification from the sensors and the models used
 % for the Navigation:
-Variance_Position_X_GPS = 2*10;
-Variance_Position_Y_GPS = 2*10;
-Variance_Heading_GNSS = 2*(pi/180);
+Variance_Position_X_GPS = 2;
+Variance_Position_Y_GPS = 2;
+Variance_Heading_GNSS = 0.1*(pi/180);
 Variance_Heading_Magnetic = 2*(pi/180);
 Variance_Velocity_Sensors = 0.1;
-% Variance_Heading_IMU = 20*(pi/180);
-% Measurement_Covariance_Matrix = [Variance_Position_X_GPS 0 0 0 0 0;
-%                                  0 Variance_Position_Y_GPS 0 0 0 0;
-%                                  0 0 Variance_Heading_GNSS 0 0 0;
-%                                  0 0 0 Variance_Heading_Magnetic 0 0;
-%                                  0 0 0 0 Variance_Heading_IMU 0;
-%                                  0 0 0 0 0 Variance_Velocity];
 Measurement_Covariance_Matrix = [Variance_Position_X_GPS^2 0 0 0 0;
                                  0 Variance_Position_Y_GPS^2 0 0 0;
                                  0 0 Variance_Heading_GNSS^2 0 0;
@@ -94,18 +86,11 @@ Measurement_Covariance_Matrix = [Variance_Position_X_GPS^2 0 0 0 0;
 
 % Define the measurement model matrix: (ofter refered as 'H' or 'Gx'
 % matrices):
-% Measurement_Model_Matrix = [1 0 0 0;
-%                             0 1 0 0;
-%                             0 0 1 0;
-%                             0 0 1 0;
-%                             0 0 1 0;
-%                             0 0 0 1];
 Measurement_Model_Matrix = [1 0 0 0;
                             0 1 0 0;
                             0 0 1 0;
                             0 0 1 0;
                             0 0 0 1];
-
 
 % ----------------------------------------------------------------
 % Extended Kalman Filter loop calculations:
@@ -126,8 +111,6 @@ Covariance_State_Previous = Covariance_Model_Prediction; % The 'P0|0' equal to '
 Control_Inputs_Previous = Control_Inputs_Initial; % The usual 'B' matrix but unused here.
 Process_Model_Covariance_Matrix_Previous = Process_Model_Covariance_Matrix; % The 'Q' process model matrix.
 Measurement_Covariance_Matrix_Previous = Measurement_Covariance_Matrix; % The 'R' measurement matrix.
-% Measurment_Current = [Position_Ship_X_Current_GPS,Position_Ship_Y_Current_GPS,Heading_GPS,Heading_Magnetometer,...
-%                       Heading_IMU,Velocity_Ship_Mean];
 Measurment_Current = [Position_Ship_X_Current_GPS,Position_Ship_Y_Current_GPS,Heading_GPS,Heading_Magnetometer,Velocity_Ship_Mean];
 
 % EKF loop calculation:
@@ -137,7 +120,6 @@ Measurment_Current = [Position_Ship_X_Current_GPS,Position_Ship_Y_Current_GPS,He
                                                                          Measurement_Covariance_Matrix_Previous,...
                                                                          Function_Process_Model(States_Previous(1),States_Previous(2),States_Previous(3),States_Previous(4),Time_Step_Integration),...
                                                                          Measurment_Current');
-
 
 % Inputs update:
 State_Model_Prediction = State_Aposteriori_Current; % This must be stored and reused at the next step time.

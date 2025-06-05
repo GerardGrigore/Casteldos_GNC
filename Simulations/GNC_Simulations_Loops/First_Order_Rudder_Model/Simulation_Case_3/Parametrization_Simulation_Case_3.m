@@ -15,7 +15,7 @@ clc;
 % * Discretized functions and discrete time environement.
 
 % ---Enter the path of the root Casteldos_GNC_Software folder:-------
-Path_Casteldos_GNC_Software = "C:\Users\gerar\Desktop\Bureau bis\";
+Path_Casteldos_GNC_Software = "C:\Users\gerar\Documents\GitHub\";
 % -------------------------------------------------------------------
 
 % Discrete time features:
@@ -24,11 +24,11 @@ Discretization_Method = char('tustin');
 
 % The script containing the parameters of the ship, the hydrodynamics
 % coefficients and the Nomoto's transfer functions:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Ship_Modeling\Ship_Parameters_Modeling\Ship_Model_Nomoto.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Ship_Modeling\Ship_Parameters_Modeling\Ship_Model_Nomoto.m");
 % PIDF Synthesis launch:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Control\Controller\PID\PID_Tuning_Case_2.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\PID_Tuning_Case_2.m");
 % Waves generation:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Environment\Waves\Waves_Model.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Environment\Waves\Waves_Model.m");
 % Trajectory generation:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC_Software\Guidance\Trajectories\Ile_De_La_Nadiere\Mission_Waypoint_Generation_In_ENU.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Guidance\Trajectories\Ile_De_La_Nadiere\Mission_Waypoint_Generation_In_ENU.m");
 

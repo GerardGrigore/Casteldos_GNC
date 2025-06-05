@@ -29,10 +29,10 @@ Time_Integration = Time_Sampling;
 % pulsation will be very high and inacurate, these values shall not be took in
 % consideration. Need to way for around 500 seconds to be sure that the
 % identification went well.
-% Wave_Pulsation_Estimated = 0.7;
-if Time_Current > 500
-    Wave_Pulsation_Estimated = Wave_Pulsation_Identified;
-end
+Wave_Pulsation_Estimated = 0.7;
+% if Time_Current > 500
+%     Wave_Pulsation_Estimated = Wave_Pulsation_Identified;
+% end
 
 % State model definition:
 % -----------------------                          
@@ -42,23 +42,9 @@ State_Matrix = [1 Time_Integration 0 0 0;
                 0 0 1 Time_Integration 0;
                 0 0 0 1-(Time_Integration/Time_Constant_Ship) Time_Integration;
                 0 0 0 0 1];
-% State_Matrix = [1 Time_Integration 0 0 0 0 0;
-%                 -Time_Integration*Wave_Pulsation_Estimated^2 1-2*Damping_Wave_Estimated*Wave_Pulsation_Estimated*Time_Integration 0 0 0 0 0;
-%                 0 0 1 Time_Integration 0 0 0;
-%                 0 0 0 1-(Time_Integration/Time_Constant_Ship) Time_Integration 0 0;
-%                 0 0 0 0 1 0 0;
-%                 0 0 0 0 0 1 Time_Integration;
-%                 0 0 0 0 0 0 1];
             
 % Input matrix 'B':
 Input_Matrix = [0;0;0;(Time_Integration*Gain_Ship)/Time_Constant_Ship;0];
-% Input_Matrix = [0 0;
-%                 0 0;
-%                 0 0;
-%                 (Time_Integration*Gain_Ship)/Time_Constant_Ship 0;
-%                 0 0;
-%                 0 0;
-%                 0 Time_Integration/Inertia_Ship_Vertical];
 
 % Noise state matrix 'G':
 Noise_State_Matrix = [0 0 0;
@@ -66,30 +52,22 @@ Noise_State_Matrix = [0 0 0;
                       0 0 0;
                       0 Time_Integration 0;
                       0 0 Time_Integration];
-% Noise_State_Matrix = [0 0 0;
-%                       Time_Integration*Wave_Pulsation_Estimated^2 0 0;
-%                       0 0 0;
-%                       0 Time_Integration 0;
-%                       0 0 Time_Integration;
-%                       0 0 0;
-%                       0 0 0];
-
 
 % State model covariance matrix 'Q': must be better estimated.
-Sigma_Heading_Wave = (1000*(pi/180))/3;
+Sigma_Heading_Wave = (200*(pi/180))/3;
 Sigma_Rate_Heading = (5*(pi/180))/3;
-% Sigma_Rate_Heading = (300*(pi/180))/3;
-% Sigma_Bias = (15*(pi/180))/3;
 Sigma_Bias = (10*(pi/180))/3;
+% Sigma_Heading_Wave = (50*(pi/180))/3;
+% Sigma_Rate_Heading = (500*(pi/180))/3;
+% Sigma_Bias = (100*(pi/180))/3;
 State_Model_Covariance_Matrix = diag([Sigma_Heading_Wave^2,Sigma_Rate_Heading^2,Sigma_Bias^2]);
-
 
 % Measurement model definition:
 % -----------------------------
 Measurement_Matrix = [0 1 1 0 0];
 % Measurement_Matrix = [0 1 1 0 0 1 0];
 % Measurement model covariance matrix 'R':
-Sigma_Heading_Estimated = ((25*pi/180)/3); % Must be the same amount of noise applied in the heading in input of the filter (ie: sensor noise).
+Sigma_Heading_Estimated = ((90*pi/180)/3); % Must be the same amount of noise applied in the heading in input of the filter (ie: sensor noise).
 Measurement_Model_Covariance_Matrix = Sigma_Heading_Estimated^2;
 Measurement_Vector_Current = Heading_Total_Observed_Current;
 
@@ -99,20 +77,6 @@ Measurement_Vector_Current = Heading_Total_Observed_Current;
 % -----------
 % State parameters propagation through the model for estimation:
 if isempty(State_Model_Prediction)
-    % Heading_Rate_Wave_Model_Previous = 0;
-    % Heading_Wave_Model_Previous = 0;
-    % Heading_Low_Frequency_Model_Previous = 0;
-    % Heading_Rate_Model_Previous = 0;
-    % Bias_Model_Previous = 0;
-    % Heading_Wind_Model_Previous = 0;
-    % Heading_Rate_Wind_Model_Previous = 0;
-    % State_Model_Prediction = [Heading_Rate_Wave_Model_Previous;
-    %                           Heading_Wave_Model_Previous;...
-    %                           Heading_Low_Frequency_Model_Previous;...
-    %                           Heading_Rate_Model_Previous;
-    %                           Bias_Model_Previous;...
-    %                           Heading_Wind_Model_Previous;...
-    %                           Heading_Rate_Wind_Model_Previous];
     Heading_Rate_Wave_Model_Previous = 0;
     Heading_Wave_Model_Previous = 0;
     Heading_Low_Frequency_Model_Previous = 0;
@@ -155,15 +119,11 @@ Heading_Wave_Estimated_Current = State_Vector_Aposteriori_Estimate(2);
 Heading_Low_Frequency_Estimated_Current = State_Vector_Aposteriori_Estimate(3);
 Heading_Rate_Estimated_Current = State_Vector_Aposteriori_Estimate(4);
 Bias_Estimated_Current = State_Vector_Aposteriori_Estimate(5);
-% Heading_Wind_Estimated_Current = State_Vector_Aposteriori_Estimate(6);
-% Heading_Rate_Wind_Estimated_Current = State_Vector_Aposteriori_Estimate(7);
 
 % Update the Kalman Filter states and covariance for the next prediction:
 State_Model_Prediction = State_Vector_Aposteriori_Estimate;
 Covariance_Prediction = Covariance_Aposteriori_Estimate;
 Rudder_Angle_Commanded_Prev = Rudder_Angle_Commanded_Current;
-
-
 
 end
 

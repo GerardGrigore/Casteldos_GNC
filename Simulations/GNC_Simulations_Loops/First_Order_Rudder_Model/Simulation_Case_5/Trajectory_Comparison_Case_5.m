@@ -1,4 +1,4 @@
-% Post Mission Analysis of the 'Simulator_Case_5' model:
+    % Post Mission Analysis of the 'Simulator_Case_5' model:
 
 % Simulated positions along the X-Axis and Y-Axis of the Body-Fixed
 % frame (positions of the ship):
@@ -13,9 +13,8 @@ Velocity_Along_Y_Axis_Simulator = out.Velocity_Along_Y_Axis_Local.Data;
 Time_Velocity_Plots = out.Velocity_Along_X_Axis_Local.Time;
 
 % Simulated headings and respective times:
-Heading_GPS_Noisy = out.Heading_Noisy_GPS.Data;
-Heading_GPS_Noisy_Processed = reshape(Heading_GPS_Noisy,size(Heading_GPS_Noisy,3),1);
-Time_Heading_GPS = out.Heading_Noisy_GPS.Time;                                           
+Heading_GPS_Noisy_Processed = out.Heading_GPS_Noisy.Data;
+Time_Heading_GPS = out.Heading_GPS_Noisy.Time;                                           
 Heading_Magnetometer_Noisy = out.Heading_Noisy_Magnetometer.Data;
 Time_Heading_Magnetometer = out.Heading_Noisy_Magnetometer.Time;
 Heading_Filtered = out.Heading_Kalman_Filtered.Data;

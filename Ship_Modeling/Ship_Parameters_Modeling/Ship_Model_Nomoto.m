@@ -17,24 +17,7 @@ Length_Ship = 5.3;
 % Salted water density:
 Density_Water_Salted = 1000;
 
-% Viscous dynamics of the salted water:
-Viscous_Dynamics_Salted_Water = 9.3e-5; % Must play with this value.
-
-% Mean depth of the tarn:
-Depth_Tarn_Mean = 1; % Careful, this plays on the Reynolds number and therfore one the drag coefficient
-
-% Gravitational acceleration:
-Gravitational_Acceleration = 9.81;
-
-% The drag coefficient of the ship at zero angle of attack:
-% First define the speed of the fluid in Shallow waters:
-Velocity_Water_Shallow = sqrt(Gravitational_Acceleration*Depth_Tarn_Mean);
-% Reynolds number:
-Reynolds_Number = (Length_Ship*Velocity_Water_Shallow)/Viscous_Dynamics_Salted_Water;
-
-% As the value of Reynolds number is lower than 2e5, consider the model of White
-% to calculate the drag coefficient:
-% Drag_Coefficient = (24/RENOLDS) + 0.4 + (6/(1 + sqrt(RENOLDS)));
+% Drag coefficient at zero angle of attack:
 Drag_Coefficient = 0.05; % Typical values in between 0.5 to 0.1 SI.
 
 % Depth of the draft:
@@ -111,13 +94,13 @@ Yaw_Added_Mass_Derivative = -0.01*Inertia_Moment; % Must try values in between -
 
 % Hydrodynamics derivative 'Y_delta':
 Sway_Control_Hydrodynamics_Derivative = 0.5*Density_Water_Salted*Length_Ship*Draft_Depth*Velocity_Ship_Mean^2*...
-                                        (Density_Water_Salted*(pi/4)*(Longeron_Area/(Length_Ship*Draft_Depth)));
+                                        ((pi/4)*(Longeron_Area/(Length_Ship*Draft_Depth)));
 % Alternative more realistic 'Y_delta' for small ship:
 %Sway_Control_Hydrodynamics_Derivative = Sway_Control_Hydrodynamics_Derivative*0.5;
 
 % Hydrodynamics derivative 'N_delta':
 Yaw_Control_Hydrodynamics_Derivative = 0.5*Density_Water_Salted*Length_Ship^2*Draft_Depth*Velocity_Ship_Mean^2*(-0.5*...
-                                       (Density_Water_Salted*(pi/4)*(Longeron_Area/(Length_Ship*Draft_Depth))));
+                                       ((pi/4)*(Longeron_Area/(Length_Ship*Draft_Depth))));
 % Alternative more realistic 'N_delta' for small ship:
 %Yaw_Control_Hydrodynamics_Derivative = Density_Water_Salted*Velocity_Ship_Mean^2*Longeron_Area*Distance_Center_Of_Gravity_To_Center_Of_Pressure;
 
@@ -138,7 +121,7 @@ Determinant_Inertia_Matrix = det(Inertia_Matrix);
 Delta_Check = 1e-3;
 Determinant_Inertia_Matrix_Crosscheck = Inertia_Matrix_11*Inertia_Matrix_22 - Inertia_Matrix_21*Inertia_Matrix_12;
 if abs(Determinant_Inertia_Matrix_Crosscheck - Determinant_Inertia_Matrix) > Delta_Check
-    warning('The determinant of the matrices are different');
+    error('The determinant of the matrices are different');
 end
 
 % Inertia coefficient term:
@@ -148,53 +131,41 @@ Inertia_Coefficient = Inertia_Moment - Yaw_Added_Mass_Derivative;
 Coriolis_Centripetal_11 = -Sway_Velocity_Hydrodynamics_Derivative;
 Coriolis_Centripetal_12 = Mass_Ship*Velocity_Ship_Mean - Sway_Yaw_Hydrodynamics_Derivative;
 Coriolis_Centripetal_21 = -Yaw_Velocity_Hydrodynamics_Derivative;
-Coriolis_Centripetak_22 = Mass_Ship*Position_Center_Of_Gravity*Velocity_Ship_Mean - Yaw_Hydrodynamics_Derivative;
+Coriolis_Centripetal_22 = Mass_Ship*Position_Center_Of_Gravity*Velocity_Ship_Mean - Yaw_Hydrodynamics_Derivative;
 % The associated matrix:
-Coriolis_Centripetal = [Coriolis_Centripetal_11 Coriolis_Centripetal_12;Coriolis_Centripetal_21 Coriolis_Centripetak_22];
+Coriolis_Centripetal = [Coriolis_Centripetal_11 Coriolis_Centripetal_12;Coriolis_Centripetal_21 Coriolis_Centripetal_22];
 % The determinant of the associated matrix:
 Determinant_Coriolis_Centripetal_Matrix = det(Coriolis_Centripetal);
 % Cross-check:
-Determinant_Coriolis_Centripetal_Matrix_Crosscheck = Coriolis_Centripetal_11*Coriolis_Centripetak_22 - Coriolis_Centripetal_21*Coriolis_Centripetal_12;
+Determinant_Coriolis_Centripetal_Matrix_Crosscheck = Coriolis_Centripetal_11*Coriolis_Centripetal_22 - Coriolis_Centripetal_21*Coriolis_Centripetal_12;
 
 % The input control matrix terms:
-Control_Inputs_Rudder_11 = ((Inertia_Moment - Yaw_Added_Mass_Derivative)*Sway_Control_Hydrodynamics_Derivative - ...
-                           (Mass_Ship*Position_Center_Of_Gravity - Sway_Yaw_Added_Mass_Derivative)*Yaw_Control_Hydrodynamics_Derivative)/(Determinant_Inertia_Matrix);
-Control_Inputs_Rudder_21 = ((Mass_Ship - Sway_Acceleration_Added_Mass_Derivative)*Yaw_Control_Hydrodynamics_Derivative -...
-                           (Mass_Ship*Position_Center_Of_Gravity - Yaw_Velocity_Added_Mass_Derivative)*Sway_Control_Hydrodynamics_Derivative)/(Determinant_Inertia_Matrix);
+% Control_Inputs_Rudder_11 = ((Inertia_Moment - Yaw_Added_Mass_Derivative)*Sway_Control_Hydrodynamics_Derivative - ...
+%                            (Mass_Ship*Position_Center_Of_Gravity - Sway_Yaw_Added_Mass_Derivative)*Yaw_Control_Hydrodynamics_Derivative)/(Determinant_Inertia_Matrix);
+% Control_Inputs_Rudder_21 = ((Mass_Ship - Sway_Acceleration_Added_Mass_Derivative)*Yaw_Control_Hydrodynamics_Derivative -...
+%                            (Mass_Ship*Position_Center_Of_Gravity - Yaw_Velocity_Added_Mass_Derivative)*Sway_Control_Hydrodynamics_Derivative)/(Determinant_Inertia_Matrix);
+Control_Inputs_Rudder_11 = Sway_Control_Hydrodynamics_Derivative; % 'Y_delta'.
+Control_Inputs_Rudder_21 = Yaw_Control_Hydrodynamics_Derivative; % 'N_delta'.
 
 % Determination of the time constant:
 Time_Constant_Equation_1 = Determinant_Inertia_Matrix/Determinant_Coriolis_Centripetal_Matrix;
-Time_Constant_Equation_2 = (Coriolis_Centripetal_11*Inertia_Matrix_22 + Coriolis_Centripetak_22*Inertia_Matrix_11 - ...
+Time_Constant_Equation_2 = (Coriolis_Centripetal_11*Inertia_Matrix_22 + Coriolis_Centripetal_22*Inertia_Matrix_11 - ...
                             Coriolis_Centripetal_12*Inertia_Matrix_21 - Coriolis_Centripetal_21*Inertia_Matrix_12)/...
                             Determinant_Coriolis_Centripetal_Matrix;
 
-% To obtain the time constant, one must solve a second order equation.
+% To obtain the time constant, one must solve a second order equation:
 Delta_Equation_Time_Constant = Time_Constant_Equation_2^2 - 4*Time_Constant_Equation_1;
 
 if Delta_Equation_Time_Constant > 0
     % Then 2 solutions:
-    Time_Constant_11 = (Time_Constant_Equation_2 - sqrt(Delta_Equation_Time_Constant))/2;
-    Time_Constant_12 = (Time_Constant_Equation_2 + sqrt(Delta_Equation_Time_Constant))/2;
-    % If one is negative, keep the physical positive one:
-    if Time_Constant_11 < 0 && Time_Constant_12 > 0
-        Time_Constant_1 = Time_Constant_12;
-    elseif Time_Constant_12 < 0 && Time_Constant_11 > 0
-        Time_Constant_1 = Time_Constant_11;
-    else
-        % If none are negative or physical, must try them both:
-        sprintf('No possibility to discretize the choice of the time constant.')
-        Time_Constant_1 = Time_Constant_11;
-        % Time_Constant_1 = Time_Constant_12;
-    end
-    % Then get the second time constant:
-    Time_Constant_2 = Time_Constant_Equation_2 - Time_Constant_1;   
+    Time_Constant_1 = (Time_Constant_Equation_2 + sqrt(Delta_Equation_Time_Constant))/2;
+    Time_Constant_2 = (Time_Constant_Equation_2 - sqrt(Delta_Equation_Time_Constant))/2;
 elseif Delta_Equation_Time_Constant == 0
     % Then only one unique solution:
     Time_Constant_1 = Time_Constant_Equation_2/2;
-    % Then get the second time constant:
-    Time_Constant_2 = Time_Constant_Equation_2 - Time_Constant_1;
+    Time_Constant_2 = Time_Constant_1;
 else
-    warning('Time cannot be imaginary.');
+    error('Time cannot be imaginary.');
 end
 
 % Define the static gain 'K_r':
@@ -216,6 +187,9 @@ Heading_On_Rudder_Transfer_Second_Order = (Static_Gain_Nomoto*(1 + Time_Constant
 
 % First order Nomoto's model:
 Time_Constant_Total = Time_Constant_1 + Time_Constant_2 - Time_Constant_3;
+if Time_Constant_Total < 0
+    warning('Equivalent time constant is negative');
+end
 Heading_On_Rudder_Transfer_First_Order = (Static_Gain_Nomoto)/(s*(1 + Time_Constant_Total*s));
 
 % Conversion of the first order model into state-space form:

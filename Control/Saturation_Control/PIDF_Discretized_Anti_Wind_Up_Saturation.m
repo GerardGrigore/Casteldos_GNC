@@ -32,8 +32,19 @@ if isempty(Rudder_Angle_Command_Previous)
     Rudder_Angle_Command_Previous = 0;
 end
 
+% % Filter parameter control:
+% Filter_Constant = 0.017;
+% 
+% % Calculate the current heading error filtered:
+% Heading_Error_Filtered_Current = Heading_Error_Filtered_Previous*(1 - (Time_Sampling/(Filter_Constant*Time_Derivative))) + Heading_Error_Previous*(Time_Sampling/(Filter_Constant*Time_Derivative));
+
+% Filter parameters control:
+Time_Filter_Derivative = 0.1; 
+Alpha_Filter = Time_Filter_Derivative / (Time_Filter_Derivative + Time_Sampling);
+
 % Calculate the current heading error filtered:
-Heading_Error_Filtered_Current = Heading_Error_Filtered_Previous*(1 - (Time_Sampling/(0.1*Time_Derivative))) + Heading_Error_Previous*(Time_Sampling/(0.1*Time_Derivative));
+Heading_Error_Filtered_Current = Alpha_Filter * Heading_Error_Filtered_Previous + ...
+                                 (1 - Alpha_Filter) * Heading_Error_Previous;
 
 % Define the increment of the command:
 Delta_Increment_Command_Current = Gain_Proportional*(Heading_Error_Current - Heading_Error_Previous) + ((Gain_Proportional*Time_Sampling)/Time_Integral)*Heading_Error_Current + ...
