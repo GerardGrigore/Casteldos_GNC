@@ -20,6 +20,7 @@ function [Heading_Rate_Wave_Estimated_Current,...
 persistent State_Model_Prediction;
 persistent Covariance_Prediction;
 persistent Rudder_Angle_Commanded_Prev;
+persistent Identified_Wave_Pulsation;
 
 % Integration step to be aligned with the sampling
 % frequency:
@@ -30,9 +31,12 @@ Time_Integration = Time_Sampling;
 % consideration. Need to way for around 500 seconds to be sure that the
 % identification went well.
 Wave_Pulsation_Estimated = 0.7;
-% if Time_Current > 500
-%     Wave_Pulsation_Estimated = Wave_Pulsation_Identified;
-% end
+if Time_Current > 500
+    if isempty(Identified_Wave_Pulsation)
+        Identified_Wave_Pulsation = Wave_Pulsation_Identified;
+    end
+    Wave_Pulsation_Estimated = Identified_Wave_Pulsation;
+end
 
 % State model definition:
 % -----------------------                          
