@@ -55,6 +55,8 @@ For each subfolder corresponding to a simulation case number i, the following el
   in successive simulation cases i + 1.
 
 **For a complete and full description of the algorithms, mathematical models and simulators, technical descriptions and justification files will be uploaded soon.**
+**For a reprezentative simulation case, aim for the Simulator_Case_5. The model including non linearities is a good example of the solutions adopted so far in terms of controller tuning, Kalman filter design, two staged recursive least square online identification algorithm and modeling.**
+
 
 ## Evolutions :arrow_upper_right:
 
