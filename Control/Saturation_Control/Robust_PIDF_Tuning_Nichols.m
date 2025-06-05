@@ -11,6 +11,7 @@ Static_Gain_Ship = 0.604;
 Time_Constant_Ship = -5.5;
 s = tf('s');
 Time_Period_Sampling = 0.1;
+Number_Dispersed_Parameters = 20;
 
 % Transfer function:
 Rudder_To_Heading_Continuous = Static_Gain_Ship/(s*(1 + Time_Constant_Ship*s));
@@ -19,7 +20,9 @@ Rudder_To_Heading_Discrete = c2d(Rudder_To_Heading_Continuous,Time_Period_Sampli
 % Pulsation_Natural = 0.5;
 % Damping_Factor = 1;
 Pulsation_Natural = 0.3;
+Pulsation_Natural_Array = linspace(0.3,5,Number_Dispersed_Parameters);
 Damping_Factor = 1.5;
+Damping_Factor_Array = linspace(0.5,1.5,Number_Dispersed_Parameters);
 Pulsation_Ship = 1/Time_Constant_Ship;
 
 % Bandwidth condition checking:
@@ -30,52 +33,69 @@ end
 
 % Controller gains definition:
 Gain_Proportional = (Time_Constant_Ship*Pulsation_Natural^2)/Static_Gain_Ship;
+Gain_Proportional_Array = (Time_Constant_Ship*Pulsation_Natural_Array.^2)/Static_Gain_Ship;
 Gain_Derivative = (2*Damping_Factor*Pulsation_Natural*Time_Constant_Ship - 1)/Static_Gain_Ship;
+Gain_Derivative_Array = (2*Damping_Factor_Array.*Pulsation_Natural_Array*Time_Constant_Ship - 1)/Static_Gain_Ship;
 Gain_Integral = (Pulsation_Natural^3/2)*(Time_Constant_Ship/Static_Gain_Ship);
+Gain_Integral_Array = (Pulsation_Natural_Array.^3/2)*(Time_Constant_Ship/Static_Gain_Ship);
 Gain_Filter = 0.01;
+Gain_Filter_Array = linspace(0.01,1,Number_Dispersed_Parameters);
 
 % Continuous and discrete controllers definition:
 Controller_PID_Continuous = Gain_Proportional + Gain_Integral/s + Gain_Derivative*s;
+Controller_PID_Continuous_Array = Gain_Proportional_Array + Gain_Integral_Array/s + Gain_Derivative_Array*s;
 Controller_PIDF_Continuous = Gain_Proportional + Gain_Integral/s + ((Gain_Derivative*s)/(1 + Gain_Filter*s));
+Controller_PIDF_Continuous_Array = Gain_Proportional_Array + Gain_Integral_Array/s + ((Gain_Derivative_Array*s)/(1 + Gain_Filter*s));
 Controller_PID_Discrete = c2d(Controller_PID_Continuous,Time_Period_Sampling,'tustin');
+Controller_PID_Discrete_Array = c2d(Controller_PID_Continuous_Array,Time_Period_Sampling,'tustin');
 Controller_PIDF_Discrete = c2d(Controller_PIDF_Continuous,Time_Period_Sampling,'tustin');
+Controller_PIDF_Discrete_Array = c2d(Controller_PIDF_Continuous_Array,Time_Period_Sampling,'tustin');
 Controller_PDF_Continuous = Gain_Proportional + ((Gain_Derivative*s)/(1 + Gain_Filter*s));
+Controller_PDF_Continuous_Array = Gain_Proportional_Array + ((Gain_Derivative_Array*s)/(1 + Gain_Filter*s));
 Controller_PDF_Discrete =  c2d(Controller_PDF_Continuous,Time_Period_Sampling,'tustin');
+Controller_PDF_Discrete_Array =  c2d(Controller_PDF_Continuous_Array,Time_Period_Sampling,'tustin');
 
 % Stability evaluation through Nichols/Bode charts:
 figure;
 nichols(Rudder_To_Heading_Continuous);
 hold on;
-nichols(Controller_PIDF_Continuous*Rudder_To_Heading_Continuous);
-legend('Countinuous ship','Open loop controlled ship using PIDF-Controller');
-title('Continuous PIDF control');
+for index_dispersed_parameters = 1:Number_Dispersed_Parameters
+    hold on;
+    nichols(Controller_PIDF_Continuous_Array(index_dispersed_parameters)*Rudder_To_Heading_Continuous);
+end
+title('Continuous PIDF control robust analysis');
 
 figure;
 nichols(Rudder_To_Heading_Continuous);
 hold on;
-nichols(Controller_PDF_Continuous*Rudder_To_Heading_Continuous);
-legend('Countinuous ship','Open loop controlled ship using PDF-Controller');
+for index_dispersed_parameters = 1:Number_Dispersed_Parameters
+    hold on;
+    nichols(Controller_PDF_Continuous_Array(index_dispersed_parameters)*Rudder_To_Heading_Continuous);
+end
 title('Continuous PDF control');
 
 figure;
 nichols(Rudder_To_Heading_Discrete);
 hold on;
-nichols(Controller_PIDF_Discrete*Rudder_To_Heading_Discrete);
-hold on;
-nichols(Controller_PDF_Discrete*Rudder_To_Heading_Discrete);
-legend('Discrete ship','Open loop controlled ship using PIDF discrete Controller',...
-       'Open loop controlled ship using PDF discrete Controller');
+for index_dispersed_parameters = 1:Number_Dispersed_Parameters
+    hold on;
+    nichols(Controller_PIDF_Discrete_Array(index_dispersed_parameters)*Rudder_To_Heading_Discrete);
+    hold on;
+    nichols(Controller_PDF_Discrete_Array(index_dispersed_parameters)*Rudder_To_Heading_Discrete);
+end
 title('Discrete PIDF/PDF control');
 
 figure;
 nichols(Rudder_To_Heading_Continuous);
 hold on;
-nichols(Controller_PIDF_Continuous*Rudder_To_Heading_Continuous);
-hold on;
-nichols(Controller_PID_Continuous*Rudder_To_Heading_Continuous);
-hold on;
-nichols(Controller_PDF_Continuous*Rudder_To_Heading_Continuous);
-legend('Plant','PIDF discrete control','PID discrete control','PDF discrete control');
+for index_dispersed_parameters = 1:Number_Dispersed_Parameters
+    hold on;
+    nichols(Controller_PIDF_Continuous_Array(index_dispersed_parameters)*Rudder_To_Heading_Continuous);
+    hold on;
+    nichols(Controller_PID_Continuous_Array(index_dispersed_parameters)*Rudder_To_Heading_Continuous);
+    hold on;
+    nichols(Controller_PDF_Continuous_Array(index_dispersed_parameters)*Rudder_To_Heading_Continuous);
+end
 title('Continuous PID/F control');
 
 figure;
