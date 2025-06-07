@@ -33,6 +33,10 @@ if isempty(Control_Signal_Previous)
 	Control_Signal_Previous = 0;
 end
 
+% Saturation limits:
+Rudder_Angle_Maximal_Saturated = 35*(pi/180);
+Rudder_Angle_Minimal_Saturated = -35*(pi/180);
+
 % Controller gains declaration:
 Controller_Zero_Gain_0 = (Gain_Proportional*(Time_Sampling + Gain_Filter) + Gain_Integral*(Time_Sampling^2 + Time_Sampling*Gain_Filter) + ...
 						  Gain_Derivative)/(Time_Sampling + Gain_Filter);

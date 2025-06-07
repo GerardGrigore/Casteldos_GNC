@@ -2,7 +2,8 @@ function Rudder_Angle_Command_Current = PIDF_Discretized_Anti_Wind_Up_Saturation
                                                                                  Gain_Proportional,...
                                                                                  Time_Integral,...
                                                                                  Time_Derivative,...
-                                                                                 Time_Sampling)
+                                                                                 Time_Sampling,...
+                                                                                 Gain_Filter)
 
 % Persistents definition:
 persistent Heading_Error_Previous;
@@ -39,7 +40,7 @@ end
 % Heading_Error_Filtered_Current = Heading_Error_Filtered_Previous*(1 - (Time_Sampling/(Filter_Constant*Time_Derivative))) + Heading_Error_Previous*(Time_Sampling/(Filter_Constant*Time_Derivative));
 
 % Filter parameters control:
-Time_Filter_Derivative = 0.1; 
+Time_Filter_Derivative = Gain_Filter; 
 Alpha_Filter = Time_Filter_Derivative / (Time_Filter_Derivative + Time_Sampling);
 
 % Calculate the current heading error filtered:
