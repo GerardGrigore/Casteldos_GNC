@@ -2,8 +2,8 @@ clear all;
 close all;
 clc;
 
-% This script serves as a rapid prototype to tune a several kinds of
-% controller by an equivalent of pole placement techniques. The goal is to
+% This script serves as a rapid prototype to tune several kind of
+% controller using the pole placement technique. The goal is to
 % study the stability of the ship control by observing simulated heading.
 
 % Global parameters:
