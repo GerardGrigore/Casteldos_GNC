@@ -3,8 +3,8 @@ close all;
 clc;
 
 % Plant to control:
-K = 2.0640;
-T = -4.4563;
+K = 0.604;
+T = -5.5;
 s = tf('s');
 Discretization_Method = char('tustin');
 T_s = 0.1; % Tuning parameter.
@@ -38,11 +38,11 @@ Z = [C_Aug*Gamma_Aug 0 0;C_Aug*Phi_Aug*Gamma_Aug C_Aug*Gamma_Aug 0;...
 % Simple constraint definition for the rate of change in the control
 % action:
 A_Matrix_QP_Cons = [-1 0 0;1 0 0];
-b_Matrix_QP_Cons = [-2*(pi/180)*T_s;2*(pi/180)*T_s];
+b_Matrix_QP_Cons = [-0.0000001;0.0000001];
 
 % Weight matrices:
 Q = eye(3);
-R = 0.01*eye(3);
+R = 2*eye(3);
 
 
 

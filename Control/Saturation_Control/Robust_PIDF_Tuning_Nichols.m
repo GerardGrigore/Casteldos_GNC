@@ -12,10 +12,18 @@ Time_Constant_Ship = -5.5;
 s = tf('s');
 Time_Period_Sampling = 0.1;
 Number_Dispersed_Parameters = 20;
+Static_Gain_Ship_Array = linspace(0.2,3,Number_Dispersed_Parameters);
+Time_Constant_Ship_Array = linspace(-3,-10,Number_Dispersed_Parameters);
 
 % Transfer function:
 Rudder_To_Heading_Continuous = Static_Gain_Ship/(s*(1 + Time_Constant_Ship*s));
 Rudder_To_Heading_Discrete = c2d(Rudder_To_Heading_Continuous,Time_Period_Sampling,'tustin');
+% Array transfer functions in function of the number of wanted model:
+for index_models_number = 1:Number_Dispersed_Parameters
+    Rudder_To_Heading_Continuous_Array(index_models_number) = Static_Gain_Ship_Array(index_models_number)/...
+                                                              (s*(1 + Time_Constant_Ship_Array(index_models_number)*s));
+    Rudder_To_Heading_Discrete(index_models_number) = c2d(Rudder_To_Heading_Continuous_Array(index_models_number),Time_Period_Sampling,'tustin');
+end
 
 % Pulsation_Natural = 0.5;
 % Damping_Factor = 1;
@@ -104,7 +112,21 @@ hold on;
 bode(Controller_PIDF_Continuous*Rudder_To_Heading_Continuous);
 legend('PID','PIDF');
 
+% Stability analysis of the dispersed plant in function of the current
+% tuning of the PIDF controller:
+figure;
+for index_dispersed_parameters = 1:Number_Dispersed_Parameters
+    hold on;
+    nichols(Controller_PIDF_Continuous*Rudder_To_Heading_Continuous_Array(index_dispersed_parameters))
+end
+title('PIDF Continuous controller and dispersed ship - Open loop');
 
+figure;
+for index_dispersed_parameters = 1:Number_Dispersed_Parameters
+    hold on;
+    nichols(Controller_PDF_Continuous*Rudder_To_Heading_Continuous_Array(index_dispersed_parameters))
+end
+title('PDF Continuous controller and dispersed ship - Open loop');
 
 
 
