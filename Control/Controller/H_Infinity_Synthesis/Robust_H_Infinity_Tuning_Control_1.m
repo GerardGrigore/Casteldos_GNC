@@ -44,7 +44,7 @@ Requirement_Tracking = TuningGoal.Tracking('Heading_Aimed','Heading_Observed',Ti
 Factor_Suppression_Disturbance = 5;
 Requirement_Rejection = TuningGoal.Gain('Analysis_Point_Indirect_Chain','Heading_Observed',Factor_Suppression_Disturbance);
 % Gain and phase margin specifications:
-Aimed_Gain_Margin = 30;
+Aimed_Gain_Margin = 40;
 Aimed_Phase_Margin = 70;
 % These margins must be seen at the first Analysis Point in the open-loop:
 Requirement_Margins = TuningGoal.Margins('Analysis_Point_Direct_Chain',Aimed_Gain_Margin,Aimed_Phase_Margin);
@@ -77,7 +77,8 @@ viewGoal([Requirement_Tracking Requirement_Rejection Requirement_Margins],Closed
 nichols(Rudder_To_Heading_Continuous);
 hold on;
 nichols(PIDF_Controller_Tuned_Paramers*Rudder_To_Heading_Continuous);
-title('Continuous Ship plant and Open-loop controlled Ship with tuned H∞');
+legend('Ship continuous transfer function','Controlled Ship with H∞ tuned PIDF');
+title('Nichols chart of the open loop');
 
 
 
