@@ -8,12 +8,19 @@ clc;
 % explored.
 
 % Define the Nomoto's first order transfer function:
-Static_Gain_Ship = 0.604;
-Time_Constant_Ship = -5.5;
+Static_Gain_Ship = 0.6043;
+Time_Constant_Ship = -5.21;
 s = tf('s');
 Time_Period_Sampling = 0.1;
 Rudder_To_Heading_Continuous = Static_Gain_Ship/(s*(1 + Time_Constant_Ship*s));
 Rudder_To_Heading_Discrete = c2d(Rudder_To_Heading_Continuous,Time_Period_Sampling,'tustin');
+% Minimal transfer function declaration:
+Rudder_To_Heading_Continuous_Minimal = -4.9/(386*s^2 - s);
+Rudder_To_Heading_Continuous_Maximal = -0.8384/(0.3209*s^2 - s);
+% Uncertain function declaration:
+Time_Constant_Ship_Uncertain = ureal('Time_Constant_Ship_Uncertain',5.21,'Range',[0.3208 387]);
+Static_Gain_Ship_Uncertain = ureal('Static_Gain_Ship_Uncertain',-0.6043,'Range',[-5 -0.6]);
+Rudder_To_Heading_Continuous_Uncertain = Static_Gain_Ship_Uncertain/(Time_Constant_Ship_Uncertain*s^2 - s);
 
 % Define the structure of the controller:
 Controller_PIDF_Structure = tunablePID('Controller_PIDF','pid');
@@ -26,7 +33,7 @@ Analysis_Point_Indirect_Chain = AnalysisPoint('Analysis_Point_Indirect_Chain');
 
 % Connection of the components to build an entire feedback controlled
 % system:
-Closed_Loop = feedback(Rudder_To_Heading_Continuous*Analysis_Point_Direct_Chain*Controller_PIDF_Structure,...
+Closed_Loop = feedback(Rudder_To_Heading_Continuous_Uncertain*Analysis_Point_Direct_Chain*Controller_PIDF_Structure,...
                        Analysis_Point_Indirect_Chain);
 Closed_Loop.InputName = 'Heading_Aimed';
 Closed_Loop.OutputName = 'Heading_Observed';
