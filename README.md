@@ -17,7 +17,8 @@ As a result, a system analysis was initially carried out to determine the main h
 However, the first months dedicated to the development of this project were allocated to designing a complete numerical simulator to assess the implemented algorithms. 
 In the coming days and months, the objective will be to produce three documents:
 * A justification note explaining the GNC algorithms.
-* A detailed description of the simulator and the equations of motion of the vessel.
+* A detailed description of the simulator and the equations of motion of the vessel. See the folder Justification_Files for the technical notes describing the mathematical models used
+  in the several releases.
 * A technical performance report that will simulate a mission and evaluate the performance and robustness of the developed algorithms.
 
 ## Numerical simulations & algorithms design :computer:
