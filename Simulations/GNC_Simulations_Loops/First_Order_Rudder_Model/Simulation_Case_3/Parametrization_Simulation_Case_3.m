@@ -26,7 +26,7 @@ Discretization_Method = char('tustin');
 % coefficients and the Nomoto's transfer functions:
 run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Ship_Modeling\Ship_Parameters_Modeling\Ship_Model_Nomoto.m");
 % PIDF Synthesis launch:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\PID_Tuning_Case_2.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\Synthesis_Tuning\PID_Tuning_Case_2.m");
 % Waves generation:
 run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Environment\Waves\Waves_Model.m");
 % Trajectory generation:

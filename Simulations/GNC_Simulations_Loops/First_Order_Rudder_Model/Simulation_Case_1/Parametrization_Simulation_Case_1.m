@@ -19,9 +19,9 @@ Path_Casteldos_GNC_Software = "C:\Users\gerar\Documents\GitHub\";
 % Parameters of the ship, hydrodynamics coefficients and Nomoto's transfer functions:
 run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Ship_Modeling\Ship_Parameters_Modeling\Ship_Model_Nomoto.m");
 % PIDF Synthesis launch:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\PID_Tuning_Case_0.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\Synthesis_Tuning\PID_Tuning_Case_0.m");
 % PIDF Synthesis launch:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\PID_Tuning_Case_1.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\Synthesis_Tuning\PID_Tuning_Case_1.m");
 % Trajectory generation:
 run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Guidance\Trajectories\Ile_De_La_Nadiere\Mission_Waypoint_Generation_In_ENU.m");
 

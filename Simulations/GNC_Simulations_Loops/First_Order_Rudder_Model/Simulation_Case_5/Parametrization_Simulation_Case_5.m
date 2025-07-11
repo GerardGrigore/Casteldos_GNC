@@ -30,13 +30,16 @@ Time_Guidance_Sampling = 20; % Guidance algorithm sampling time.
 % Parameters of the ship, hydrodynamics coefficients and Nomoto's transfer functions:
 run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Ship_Modeling\Ship_Parameters_Modeling\Ship_Model_Nomoto.m");
 % PIDF Synthesis launch:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\PID_Tuning_Case_2.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\Synthesis_Tuning\PID_Tuning_Case_2.m");
 % Wind generation:
 run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Environment\Wind\Wind_Model.m");
 % Waves generation:
 run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Environment\Waves\Waves_Model.m");
 % Trajectory generation:
 run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Guidance\Trajectories\Ile_De_La_Nadiere\Mission_Waypoint_Generation_In_ENU.m");
+% Linear actuator features:
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Actuators\Linear_Actuator\Linear_Actuator_Features.m");
+
 
 % Repositories sourcing for algorithms:
 % Guidance function:
@@ -51,6 +54,11 @@ addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Navigation"));
 addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Saturation_Control"));
 % Icons & pictures importation for masks:
 addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Icons"));
+% Embedded control algorithms:
+addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\Embedded_Algorithms"));
+% Actuators models:
+addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Actuators\Linear_Actuator"));
+
 
 % Initial states declaration:
 Reference_Point_Port_Mahon = [43.059023,3.002915,0];
