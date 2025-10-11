@@ -1,15 +1,45 @@
-Composition of the 'Simulation_Case_6' closed loop simulation:
+Composition of the 'Simulation_Case_7' closed loop simulation:
 
-- 
+- The embedded final Guidance algorithm based on Waypoints following.
+- The Control algorithm based on PD-Filtered control. No blocks, only embedded functions.
+- The actuator model is based on a 'zero' order model of saturations. Again, no blocks and
+  future embedded saturation function used.
+- First order Nomoto model used for the system modelling. The physics being continuous: no
+  discretization of the system dynamics.
+- Very dimensionning 6° to 8° heading variation due to waves added to perturb the heading of 
+  the system.
+- Navigation: high pass filter in order to keep only the low frequency of the command, that shall
+  only contain the perturbation due to waves. The resulting signal is then injected into
+  a two-staged ARMA model allowing to estimate the frequency and damping of the waves.
+  In parallel, EKF to fuse and filter measurements from Magnetometer, GPS and INS sensors.
+  Therefore, use of the Heading filtered and the estimation of the parameters of the wave to obtain,
+  through a Kalman Filter Estimator (KF linear), the components du to control and not the perturbed one.
 
 Neglected elements:
 
-- 
+- A more complete model of the actuator.
 
 Conclusions:
 ------------
 
-- 
+- Important note: if the Guidance frequency is too high, the heading generated
+  profile can present some abrupt values and brutal picks. This can result in a 
+  destabilization of the controlled heading. An aggravating factor is the online
+  estimation of the wave perturbation pulsation. Therefore, if the online estimation
+  is activated, there is a need to increase the period of the Guidance algorithm:
+  therefore decreasing its frequence.
+
+- If one tunes a perturbation of around 15° to 20° of heading perturbation due to waves
+  (which is nearly unphysical and higly unprobable along all the duration of the mission),
+  the control is healthy untill the use of the estimated wave pulsation in the ARMA
+  algorithm. Paradoxically, when the water is very disturbed, the deactivation of the 
+  ARMA estimation wave pulsation and the use of an arbitrary one in the KF-Estimator results
+  in better control (no divergence). In fact, the motion diverges at a certain point.
+  Hence: need to work on a better dimensioning of the perturbation. Or other tuning of the
+  control algorithm: in an adaptative way maybe.
+
+- In the next version: upgrade of the EKF to incorporate more complex dynamics, use of a variable
+  ship velocity and the implication of this on the controller tuning and the EKF.
 
 
 

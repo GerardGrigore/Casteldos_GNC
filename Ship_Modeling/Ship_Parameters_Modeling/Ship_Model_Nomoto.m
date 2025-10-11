@@ -169,9 +169,9 @@ Yaw_Control_Hydrodynamics_Derivative_Minimal = 0.5*Density_Water_Salted_Minimal*
 Yaw_Control_Hydrodynamics_Derivative_Maximal = 0.5*Density_Water_Salted_Maximal*Length_Ship_Maximal^2*Draft_Depth_Maximal*Velocity_Ship_Mean_Maximal^2*(-0.5*...
                                                ((pi/4)*(Longeron_Area_Maximal/(Length_Ship_Maximal*Draft_Depth_Maximal))));
 
-% ******************************************************************
-% Transfer function between control angle and heading & parameters:
-% ******************************************************************
+% ********************************************************************
+% 3) Transfer function between control angle and heading & parameters:
+% ********************************************************************
 
 % Inertia matrix terms:
 Inertia_Matrix_11 = Mass_Ship - Sway_Acceleration_Added_Mass_Derivative;

@@ -1,0 +1,44 @@
+Composition of the 'Simulation_Case_6' closed loop simulation:
+
+- 
+
+Neglected elements:
+
+- 
+
+Conclusions:
+------------
+
+- Important note: if the Guidance frequency is too high, the heading generated
+  profile can present some abrupt values and brutal picks. This can result in a 
+  destabilization of the controlled heading. An aggravating factor is the online
+  estimation of the wave perturbation pulsation. Therefore, if the online estimation
+  is activated, there is a need to increase the period of the Guidance algorithm:
+  therefore decreasing its frequence.
+
+- If the heading variance of the model is fixed to a low value, it means that we 
+  suppose to have a great confidence in our heading variation model. However, in this
+  first simple EKF model, we have chosen a simple heading angle to be equal to its previous
+  value. Therefore, if the associated variance is too low: the filter might diverge because
+  it will try to choose some values of heading that are very close from one step to another;
+  which is infact not the case. There is a need to embbed a more complex model of the heading.
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
