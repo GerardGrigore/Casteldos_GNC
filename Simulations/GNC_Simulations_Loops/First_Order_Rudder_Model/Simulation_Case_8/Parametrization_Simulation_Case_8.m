@@ -6,7 +6,18 @@ clc;
 % model. The main features of this case are:
 
 % * Guidance Waypoints-based algorithm.
-% * 
+% * Wave environnement switched to continuous instead of discrete (physics
+%   is continuous).
+% * Creation of an online hydrodynamics coefficients estimation due to
+%   velocity LPV model adoption.
+% * Implementation of a time-varying PDF Controller based on the estimator
+%   of hydrodynamics parameters and velocity LPV model.
+% * LPV in velocity ship model implementation.
+% * Profile of nom-velocity creation.
+% * Complexification of the EKF incorporating Yaw rates measruement and non
+%   constant velocity. Addition of the input transfert function of the ship
+%   in the model. Fine tuning of the covariance matrices.
+% * Modification of the Kalman Filter Observer covariance matrices.
 
 % ---Enter the path of the root Casteldos_GNC_Software folder:-------
 Path_Casteldos_GNC_Software = "C:\Users\gerar\Documents\GitHub\";
@@ -50,7 +61,8 @@ addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Icons"));
 addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\Embedded_Algorithms"));
 % Actuators models:
 addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Actuators\Linear_Actuator"));
-
+% Ship LPV functions:
+addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Ship_Modeling\Ship_Parameters_Modeling"));
 
 % Initial states declaration:
 Reference_Point_Port_Mahon = [43.059023,3.002915,0];

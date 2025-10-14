@@ -3,7 +3,7 @@
 % See Guidance & Control of ships page 86,87/494. (p.238 also)
 
 % Initial pulsation wave: /!\ must be taken between 0.3 & 1.3 rad/s to be realistic /!\.
-Pulsation_Wave = 0.7;
+Pulsation_Wave = 0.6;
 % Pulsation_Wave = 1.2;
 
 % Gravitational acceleration:
@@ -26,8 +26,7 @@ Waves_Intensity_Factor = sqrt(10);
 Static_Gain_Waves = 2*Damping_Factor_Waves*Pulsation_Encounter*Waves_Intensity_Factor;
 
 % Transfer function:
-% Wave_Transfer_Function = (Static_Gain_Waves*s)/(s^2 + 2*Damping_Factor_Waves*Pulsation_Wave*s + Pulsation_Wave^2);
-Wave_Transfer_Function = (Static_Gain_Waves*s)/(s^2 + 2*Damping_Factor_Waves*Pulsation_Encounter*s + Pulsation_Encounter^2);
+Wave_Transfer_Function = (Pulsation_Wave^2)/(s^2 + 2*Damping_Factor_Waves*Pulsation_Wave*s + Pulsation_Wave^2);
 
 % Settle the transfer function to canonical terms:
 Factor_Wave_1 = Pulsation_Wave^2;

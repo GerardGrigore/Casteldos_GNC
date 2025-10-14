@@ -26,6 +26,11 @@ if isempty(Heading_Error_Previous)
     Heading_Error_Previous = 0;
 end
 
+% Protection for null velocity declaration:
+if Velocity_Current == 0
+    Velocity_Current = 5/3.6;
+end
+
 % Compute the static gain and the time constant of the model of the ship in
 % function of the velocity:
 [Static_Gain_Nomoto_LPV,Time_Constant_Total_LPV] = Static_Gain_Time_Constant_Varying_Velocity(Velocity_Current,...

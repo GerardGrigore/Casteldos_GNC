@@ -1,4 +1,4 @@
-    % Post Mission Analysis of the 'Simulator_Case_5' model:
+% Post Mission Analysis of the 'Simulator_Case_7' model:
 
 % Simulated positions along the X-Axis and Y-Axis of the Body-Fixed
 % frame (positions of the ship):

@@ -1,29 +1,43 @@
 Composition of the 'Simulation_Case_6' closed loop simulation:
 
-- 
+- The embedded final Guidance algorithm based on Waypoints following.
+- The Control algorithm based on PD-Filtered control. No blocks, only embedded functions.
+- The actuator model is based on a 'zero' order model of saturations. Again, no blocks and
+  future embedded saturation function used.
+- First order Nomoto model used for the system modelling. The physics being continuous: no
+  discretization of the system dynamics. Switch from LTI to an LPV in the velocity.
+- Very dimensionning 6° to 8° heading variation due to waves added to perturb the heading of 
+  the system.
+- Navigation: high pass filter in order to keep only the low frequency of the command, that shall
+  only contain the perturbation due to waves. The resulting signal is then injected into
+  a two-staged ARMA model allowing to estimate the frequency and damping of the waves.
+  In parallel, EKF to fuse and filter measurements from Magnetometer, GPS and INS sensors.
+  Therefore, use of the Heading filtered and the estimation of the parameters of the wave to obtain,
+  through a Kalman Filter Estimator (KF linear), the components du to control and not the perturbed one.
+- Velocity norm profile created "by-hands" in the kinematics propagation block. Some real profile
+  shall be created in the next release of the simulator's version.
 
 Neglected elements:
 
-- 
+- More developped model of the actuators.
 
 Conclusions:
 ------------
 
-- Important note: if the Guidance frequency is too high, the heading generated
-  profile can present some abrupt values and brutal picks. This can result in a 
-  destabilization of the controlled heading. An aggravating factor is the online
-  estimation of the wave perturbation pulsation. Therefore, if the online estimation
-  is activated, there is a need to increase the period of the Guidance algorithm:
-  therefore decreasing its frequence.
+- A fine tuning of the global EKF has finally be found. It allows for the embedded 
+  wave estimator afterward to estimate, in the good manner, the dynamics at low frequency
+  of the ship corresponding to the one to send to the controller.
 
-- If the heading variance of the model is fixed to a low value, it means that we 
-  suppose to have a great confidence in our heading variation model. However, in this
-  first simple EKF model, we have chosen a simple heading angle to be equal to its previous
-  value. Therefore, if the associated variance is too low: the filter might diverge because
-  it will try to choose some values of heading that are very close from one step to another;
-  which is infact not the case. There is a need to embbed a more complex model of the heading.
+- Velocity norm profile has been manually created; they shall be automatically created in the
+  next release. Note that whenever a too abrupt change in velocity is done, the control loop
+  shall diverge: hence the need of creation of smoother ramp velocity profile.
 
+- The controller, EKF and KF_Estimator work well using the LPV in velocity function and using
+  the estimated velocity in output of the EKF.
 
+- In the next releases: new discretization method will be test in the KF_Estimator, H_Infinity
+  synthesis for Loop_Shaping of the ship frequency domain will then be used. Eventually, an
+  MPC/Tube_MPC algorithm will be developped and tested and compared to the previous versions.
 
 
 

@@ -6,7 +6,10 @@ clc;
 % model. The main features of this case are:
 
 % * Guidance Waypoints-based algorithm.
-% * 
+% * Controller-PDF and staturations modelling the actuator.
+% * LTI Ship first order dynamics.
+% * Simple dynamics EKF with constant velocity assumptions.
+% * ARMA Identification online algorithm for wave estimation.
 
 % ---Enter the path of the root Casteldos_GNC_Software folder:-------
 Path_Casteldos_GNC_Software = "C:\Users\gerar\Documents\GitHub\";
