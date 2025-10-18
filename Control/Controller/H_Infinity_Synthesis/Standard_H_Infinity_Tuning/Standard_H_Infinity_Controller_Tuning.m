@@ -248,7 +248,7 @@ Pulsation_Unit_Gain_Filter_2 = 10000; % To be tuned, try 100 rad/s.
 % Filter 3:
 Gain_Infinity_Filter_3 = 0.1; % To be tuned.
 Gain_Static_Filter_3 = 0.1;
-Pulsation_Unit_Gain_Filter_3 = 40; % To be tuned, try 70 rad/s.
+Pulsation_Unit_Gain_Filter_3 = 30; % To be tuned, try 70 rad/s.
 % Filter 4:
 Gain_Static_Filter_4 = 1000;
 
