@@ -238,19 +238,24 @@ title('Frequency response of the system composed by the ship and the waves - Bod
 % ---------------------
 % Filter choice:
 % Filter 1:
-Gain_Infinity_Filter_1 = 0.5;
-Gain_Static_Filter_1 = 1000;
-Pulsation_Unit_Gain_Filter_1 = 1;
+Gain_Infinity_Filter_1 = 0.5; % Initially 0.5
+Gain_Static_Filter_1 = 100;
+Pulsation_Unit_Gain_Filter_1 = 3/20; % Initially 1.5.
 % Filter 2:
-Gain_Infinity_Filter_2 = 100;
+Gain_Infinity_Filter_2 = 10000; % Initially 100. Increased value in order to impose a low gain for the reference to input command transfer.
 Gain_Static_Filter_2 = 0.01;
-Pulsation_Unit_Gain_Filter_2 = 10000; % To be tuned, try 100 rad/s.
+Pulsation_Unit_Gain_Filter_2 = 0.8; % To be tuned, try 100 rad/s. No, instead, lowest value possible to participate
+% in the lowering of the gain of the transfer from input reference heading
+% aimed to the commanded rudder => to impose the lowest rudder amplitude
+% command possible. However, imposing such a low pulsation and high gain
+% results in a very high gamma synthesis (around 30).
+
 % Filter 3:
-Gain_Infinity_Filter_3 = 0.1; % To be tuned.
-Gain_Static_Filter_3 = 0.1;
-Pulsation_Unit_Gain_Filter_3 = 30; % To be tuned, try 70 rad/s.
+Gain_Infinity_Filter_3 = 10; % To be tuned. 10 initially.
+Gain_Static_Filter_3 = 0.1; % Initially 0.1.
+Pulsation_Unit_Gain_Filter_3 = 70; % To be tuned, try 70 rad/s.
 % Filter 4:
-Gain_Static_Filter_4 = 1000;
+Gain_Static_Filter_4 = 0.1; % Initially 0.1.
 
 % Standard P(s) plant reprezentation in the Model named
 % 'Standard_H_Infinity_Full_Order_Synthesis'.
