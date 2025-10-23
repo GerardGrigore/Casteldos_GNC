@@ -37,6 +37,7 @@ The main design choices and so far explored concepts are as follows:
     requirements and constraints.
   * Optimal Linear Quadratic (LQ) controller: Tuned on a simplified version of the simulator, yet demonstrating strong performance within the complete simulation environment.
   * Handling of non-linearities through the use of an anti wind-up strategy.
+  * H_Infinity controller synthesis using two methods in order to design a robust controller.
 * Guidance: (Applied Mathematics)
   * Waypoint-based trajectory generation.
   * Curved-Path Guidance.
