@@ -16,12 +16,16 @@ global Pulsation_Unit_Gain_Filter_2;
 global Pulsation_Unit_Gain_Filter_3;
 global Gain_Static_Filter_4;
 global Number_Iterations_Count;
+global State_Matrix_Ship_Wave_Nominal;
+global Input_Matrix_Nominal_Global;
+global Measurement_Matrix_Ship_Wave_Nominal;
+global Input_Measurement_Matrix_Global_Nominal;
 
 % The fixed ponderation paraemeters are the following:
 Gain_Static_Filter_1 = 1000;
 Gain_Infinity_Filter_1 = 0.5;
 Gain_Static_Filter_2 = 0.01;
-Gain_Infinity_Filter_2 = 100;
+Gain_Infinity_Filter_2 = 10000;
 
 % Bounds on the parameters pulsations Omega_Filter_1 to 3 and
 % Gain_Static_Filter_3, Gain_Infinity_Filter_3 and Gain_Static_Filter_4 (log10):
@@ -31,7 +35,7 @@ Upper_Bound_Omega_Filter_1 = 10;
 Log_Lower_Bound_Omega_Filter_1 = log10(Lower_Bound_Omega_Filter_1);
 Log_Upper_Bound_Omega_Filter_1 = log10(Upper_Bound_Omega_Filter_1);
 % Omega_Filter_2:
-Lower_Bound_Omega_Filter_2 = 1;
+Lower_Bound_Omega_Filter_2 = 0.1;
 Upper_Bound_Omega_Filter_2 = 1000;
 Log_Lower_Bound_Omega_Filter_2 = log10(Lower_Bound_Omega_Filter_2);
 Log_Upper_Bound_Omega_Filter_2 = log10(Upper_Bound_Omega_Filter_2);
@@ -56,21 +60,25 @@ Upper_Bound_Gain_Static_Filter_4 = 1000; % Not the one taken by the initial stud
 Log_Lower_Bound_Gain_Static_Filter_4 = log10(Lower_Bound_Gain_Static_Filter_4);
 Log_Upper_Bound_Gain_Static_Filter_4 = log10(Upper_Bound_Gain_Static_Filter_4);
 % Bounds:
-Lower_Bounds_Parameters = [Log_Lower_Bound_Omega_Filter_1  Log_Lower_Bound_Omega_Filter_2  Log_Lower_Bound_Omega_Filter_3 Log_Lower_Bound_Gain_Static_Filter_3  Log_Lower_Bound_Gain_Infinity_Filter_3  Log_Lower_Bound_Gain_Static_Filter_4];
-Upper_Bounds_Parameters = [Log_Upper_Bound_Omega_Filter_1  Log_Upper_Bound_Omega_Filter_2  Log_Upper_Bound_Omega_Filter_3  Log_Upper_Bound_Gain_Static_Filter_3  Log_Upper_Bound_Gain_Infinity_Filter_3   Log_Upper_Bound_Gain_Static_Filter_4];
+Lower_Bounds_Parameters_Old = [Log_Lower_Bound_Omega_Filter_1  Log_Lower_Bound_Omega_Filter_2  Log_Lower_Bound_Omega_Filter_3 Log_Lower_Bound_Gain_Static_Filter_3  Log_Lower_Bound_Gain_Infinity_Filter_3  Log_Lower_Bound_Gain_Static_Filter_4];
+Upper_Bounds_Parameters_Old = [Log_Upper_Bound_Omega_Filter_1  Log_Upper_Bound_Omega_Filter_2  Log_Upper_Bound_Omega_Filter_3  Log_Upper_Bound_Gain_Static_Filter_3  Log_Upper_Bound_Gain_Infinity_Filter_3   Log_Upper_Bound_Gain_Static_Filter_4];
 
 % Initial values for the parameters:
-Pulsation_Unit_Gain_Filter_1 = 10;
-Pulsation_Unit_Gain_Filter_2 = 100;
+Pulsation_Unit_Gain_Filter_1 = 3/20;
+Pulsation_Unit_Gain_Filter_2 = 0.8;
 Pulsation_Unit_Gain_Filter_3 = 70;
-Gain_Static_Filter_3 = 10;
+Gain_Static_Filter_3 = 0.1;
 Gain_Infinity_Filter_3 = 10;
-Gain_Static_Filter_4 = 0.5;
+Gain_Static_Filter_4 = 0.1;
+% Bounds fixed to be in a certain interval associated with the initial
+% values:
+Lower_Bounds_Parameters = log10(0.1*[Pulsation_Unit_Gain_Filter_1 Pulsation_Unit_Gain_Filter_2 Pulsation_Unit_Gain_Filter_3 Gain_Static_Filter_3 Gain_Infinity_Filter_3 Gain_Static_Filter_4]);
+Upper_Bounds_Parameters = log10(10*[0.4*Pulsation_Unit_Gain_Filter_1 Pulsation_Unit_Gain_Filter_2 Pulsation_Unit_Gain_Filter_3 Gain_Static_Filter_3 Gain_Infinity_Filter_3 Gain_Static_Filter_4]);
 Number_Of_Variables = size(Upper_Bounds_Parameters,2);
 
 % Search for optimal parameters:
-Tolerance_Function = 0.1;
-Number_Iteration_Maximal_Stall = 4;
+Tolerance_Function = 0.01;
+Number_Iteration_Maximal_Stall = 10;
 
 % State-Space Ship and wave declaration:
 Static_Gain_Ship_Nominal = 0.6043;
@@ -119,7 +127,6 @@ Options_Optimization = optimoptions('particleswarm','FunctionTolerance',Toleranc
                 Gain_Static_Filter_4));
   
 % Calculation of the corrector with the optimal parameters:
-% représentation d'état de P(s) : schéma 'synthese_bras'
 [State_Matrix_Standard_P_After_Optimization,...
  Input_Matrix_Standard_P_After_Optimization,...
  Measurement_Matrix_Standard_P_After_Optimization,...
@@ -148,6 +155,9 @@ Controller_After_Optimization = ss(Sate_Matrix_After_Optimization_Controller,...
                                    Input_Matrix_After_Optimization_Controller,...
                                    Measurement_Matrix_After_Optimization_Controller,...
                                    Input_Measurement_Matrix_After_Optimization_Controller);
+
+% Save of the parameters optimization:
+save Stochastic_Optimization_Parameters_Results_2 Controller_After_Optimization Gamma_Optimal_Value_After_Optimization Gain_Static_Filter_1 Gain_Static_Filter_2 Gain_Static_Filter_3 Gain_Static_Filter_4 Gain_Infinity_Filter_1 Gain_Infinity_Filter_2 Gain_Infinity_Filter_3 Pulsation_Unit_Gain_Filter_1 Pulsation_Unit_Gain_Filter_2 Pulsation_Unit_Gain_Filter_3;
 
 
 

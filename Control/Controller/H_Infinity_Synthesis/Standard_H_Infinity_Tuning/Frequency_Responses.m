@@ -136,13 +136,6 @@ Ship_Transfer_Function_Open_Loop = tf(ss(State_Matrix_Ship_Wave_Nominal,...
 % Ship transfer function:
 Ship_Transfer_Function = Ship_Transfer_Function_Open_Loop(1);
 Wave_Transfer_Function = Ship_Transfer_Function_Open_Loop(2);
-figure(8);
-bode(Open_Loop,Type,Pulsation_Omega);
-hold on;
-bode(Controller_Ship*Ship_Transfer_Function,Type,Pulsation_Omega);
-legend('Open-Loop determined using Algebra on State-Space.',...
-       'Open-Loop determined using the transfers.');
-title('Bode comparison.');
 
 % Additional verification:
 Feedback_Loop = feedback(1,Open_Loop);
