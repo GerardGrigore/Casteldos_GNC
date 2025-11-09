@@ -3,7 +3,7 @@
 % See Guidance & Control of ships page 86,87/494. (p.238 also)
 
 % Initial pulsation wave: /!\ must be taken between 0.3 & 1.3 rad/s to be realistic /!\.
-Pulsation_Wave = 0.6;
+Pulsation_Wave = 1.2;
 % Pulsation_Wave = 1.2;
 
 % Gravitational acceleration:

@@ -56,7 +56,7 @@ Controller_PDF_Classical_Discrete = c2d(Controller_PDF_Classical_Continuous,Time
 % -----------------------
 % Determine the gains:
 % The Proportional and Derivative gains have been previously determined.
-Gain_Integral = (Pulsation_Natural^3/2)*(Time_Constant_Total/Static_Gain_Nomoto);
+Gain_Integral = (Pulsation_Natural^3/10)*(Time_Constant_Total/Static_Gain_Nomoto);
 Time_Integral = Gain_Proportional/Gain_Integral;
 % Transfer functions:
 Controller_PID = Gain_Proportional + Gain_Derivative*s + Gain_Integral/s;
@@ -71,8 +71,6 @@ Controller_PIDF_Classical_Discrete = c2d(Controller_PIDF_Classical_Continuous,Ti
 
 % Bode & Nichols plots for freqeuncy stability analysis:
 % ------------------------------------------------------
-% Continuous analysis:
-% --------------------
 % PD-Controller:
 figure;
 nichols(Heading_On_Rudder_Transfer_First_Order);
@@ -115,54 +113,32 @@ hold on;
 nichols(Controller_PDF_Classical_Continuous*Heading_On_Rudder_Transfer_First_Order);
 legend('Ship transfert function','Continuous classical PDF-Controlled ship');
 title('Open-loop composed by continuous classical PD Controller and Ship transfer function');
+% Closed-loop bandwidth determination:
+% PIDF Controller:
+figure;
+Closed_Loop_Transfer_PIDF_Controller = (Controller_PIDF_Continuous*Heading_On_Rudder_Transfer_First_Order)/...
+                                       (1 + Controller_PIDF_Continuous*Heading_On_Rudder_Transfer_First_Order);
+bode(Closed_Loop_Transfer_PIDF_Controller);
+title('Bode diagram PIDF Controller.');
+% PID Controller:
+figure;
+Closed_Loop_Transfer_PID_Controller = (Controller_PID*Heading_On_Rudder_Transfer_First_Order)/...
+                                      (1 + Controller_PID*Heading_On_Rudder_Transfer_First_Order);
+bode(Closed_Loop_Transfer_PID_Controller);
+title('Bode diagram PID Controller.');
+% PDF Controller:
+figure;
+Closed_Loop_Transfer_PDF_Controller = (Controller_PDF_Continuous*Heading_On_Rudder_Transfer_First_Order)/...
+                                      (1 + Controller_PDF_Continuous*Heading_On_Rudder_Transfer_First_Order);
+bode(Closed_Loop_Transfer_PDF_Controller);
+title('Bode diagram PDF Controller.');
 
-% Discrete analysis:
-% ------------------
-% PD-Controller:
+% Bandwidth of the closed-loop to be determined:
 figure;
-nichols(Rudder_To_Heading_Discretized);
-hold on;
-nichols(Controller_PD_Discrete*Rudder_To_Heading_Discretized);
-legend('Discrete ship transfert function','Discrete PD-Controlled ship');
-title('Open-loop composed by discrete PD-Controller and Ship transfer function');
-% PDF-Controller:
-figure;
-nichols(Rudder_To_Heading_Discretized);
-hold on;
-nichols(Controller_PDF_Discrete*Rudder_To_Heading_Discretized);
-legend('Discrete ship transfert function','Discrete PDF-Controlled ship');
-title('Open-loop composed by discrete PDF-Controller and Ship transfer function');
-% PID-Controller:
-figure;
-nichols(Rudder_To_Heading_Discretized);
-hold on;
-nichols(Controller_PID_Discrete*Rudder_To_Heading_Discretized);
-legend('Discrete ship transfert function','Discrete PID-Controlled ship');
-title('Open-loop composed by discrete PID-Controller and Ship transfer function');
-% PIDF-Controller:
-figure;
-nichols(Rudder_To_Heading_Discretized);
-hold on;
-nichols(Controller_PIDF_Discrete*Rudder_To_Heading_Discretized);
-legend('Discrete ship transfert function','Discrete PIDF-Controlled ship');
-title('Open-loop composed by Discrete PIDF-Controller and Ship trasnfer function');
-% PIDF-Classical Controller:
-figure;
-nichols(Rudder_To_Heading_Discretized);
-hold on;
-nichols(Controller_PIDF_Classical_Discrete*Rudder_To_Heading_Discretized);
-legend('Discrete ship transfert function','Discrete PIDF-Controlled ship');
-title('Open-loop composed by Discrete PIDF-Controller classical and Ship trasnfer function');
-% PDF-Classical Controller:
-figure;
-nichols(Rudder_To_Heading_Discretized);
-hold on;
-nichols(Controller_PDF_Classical_Discrete*Rudder_To_Heading_Discretized);
-legend('Discrete ship transfert function','Discrete PDF-Controlled ship');
-title('Open-loop composed by Discrete PDF-Controller classical and Ship trasnfer function');
-
-
-
+Closed_Loop_Transfer_PDF_Controller_Classical = (Controller_PDF_Classical_Continuous*Heading_On_Rudder_Transfer_First_Order)/...
+                                                (1 + Controller_PDF_Classical_Continuous*Heading_On_Rudder_Transfer_First_Order);
+bode(Closed_Loop_Transfer_PDF_Controller_Classical);
+title('Bode diagram PDF Classical Controller.');
 
 
 

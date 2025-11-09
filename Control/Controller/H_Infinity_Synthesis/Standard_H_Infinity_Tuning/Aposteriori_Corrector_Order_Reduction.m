@@ -2,10 +2,11 @@
 % the H infinity standard synthesis of the controller.
 
 % Initial corrector order reduction:
+Degrees_Of_Freedom_Synthesis = 2;
 Order_Corrector_Aimed = 3;
 figure;
 bode(Controller); 
-hold on;
+hold on
 [Equilibred_State_Equivalent_System,Diagonal_Vector_Hankel_Singular_Values] = balreal(Controller);
 
 % Note that the reduced controller is obtained by only keeping the states
@@ -60,7 +61,24 @@ Input_Matrix_Controller_Nominal = Input_Matrix_Controller_After_Reduction;
 Measurement_Matrix_Controller_Nominal = Measurement_Matrix_Controller_After_Reduction;
 Input_Measurement_Matrix_Controller_Nominal = Input_Measurement_Matrix_Controller_After_Reduction;
 Controller = Corrector_After_Reduction;
+Tranfer_Functions_Controller = tf(Controller);
+% As the synthesis has been done using 2 DoF:
+for index_order_synthesis = 1:length(Tranfer_Functions_Controller)
+    sprintf('The synthesis is of DoF 2.')
+    % Numerators evaluations:
+    eval(sprintf('Numerator_Controller_Function_%i = Tranfer_Functions_Controller.Numerator{index_order_synthesis};', index_order_synthesis));
+    % Denominators evaluations:
+    eval(sprintf('Denominator_Controller_Function_%i = Tranfer_Functions_Controller.Denominator{index_order_synthesis};', index_order_synthesis));
+end
 
+for index_order_Controller = 1:length(Numerator_Controller_Function_1)
+    % Controller number 1:
+    eval(sprintf('Numerator_Coefficient_Controller_1_%i = Numerator_Controller_Function_1(index_order_Controller);', index_order_Controller));
+    eval(sprintf('Denominator_Coefficient_Controller_1_%i = Denominator_Controller_Function_1(index_order_Controller);', index_order_Controller));
+    % Controller number 2:
+    eval(sprintf('Numerator_Coefficient_Controller_2_%i = Numerator_Controller_Function_2(index_order_Controller);', index_order_Controller));
+    eval(sprintf('Denominator_Coefficient_Controller_2_%i = Denominator_Controller_Function_2(index_order_Controller);', index_order_Controller));
+end
 
 
 

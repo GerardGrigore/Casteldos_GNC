@@ -29,11 +29,9 @@ legend('Filter 1','Filter 2','Filter 3');
 % Considered Heading Aimed value:
 Step_Heading_Aimed = 30*(pi/180);
 % Perturbation step considered:
-Perturbation_Step = 1*(pi/180);
-% Perturbation_Step = 10*(pi/180);
+Perturbation_Step = 10*(pi/180);
 % Perturbation measure:
-Heading_Variance_Noise = 0.5*(pi/180);
-% Heading_Variance_Noise = 10*(pi/180);
+Heading_Variance_Noise = 1*(pi/180);
 
 % Frequency response of Transfer from Heading_Aimed (r/Psi_Aimed) to the error
 % epsilon (Epsilon):
