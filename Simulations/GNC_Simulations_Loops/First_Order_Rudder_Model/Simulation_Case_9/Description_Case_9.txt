@@ -1,0 +1,79 @@
+Composition of the 'Simulation_Case_9' closed loop simulation:
+
+- The embedded final Guidance algorithm based Integrated Line-Of-Sight: an integral term
+  has been integrated to the expression of the heading aimed. It is used in order to have
+  a non-null heading bearing even if the track error is nul (i.e even if the ship is on its
+  desired trajectory). Indeed, without this dynamic integration term, the heading is null
+  if the ship follows its trajectory which is an undesired behaviour since there is no reason
+  to aim for a null heading.
+
+- The Control algorithm based on PD-Filtered control. No blocks, only embedded functions.
+  A manual switch is possible allowing to use the controller synthetized using the H_Infinity
+  Optimizator.
+
+- The actuator model is based on a 'zero' order model of saturations. Again, no blocks and
+  future embedded saturation function used.
+
+- First order Nomoto model used for the system modelling. The physics being continuous: no
+  discretization of the system dynamics. Switch from LTI to an LPV in the velocity.
+
+- Very dimensionning 6° to 10° heading variation due to waves added to perturb the heading of 
+  the system.
+
+- Navigation: high pass filter in order to keep only the low frequency of the command, that shall
+  only contain the perturbation due to waves. The resulting signal is then injected into
+  a two-staged ARMA model allowing to estimate the frequency and damping of the waves.
+  In parallel, EKF to fuse and filter measurements from Magnetometer, GPS and INS sensors.
+  Therefore, use of the Heading filtered and the estimation of the parameters of the wave to obtain,
+  through a Kalman Filter Estimator (KF linear), the components du to control and not the perturbed one.
+
+Neglected elements:
+
+- More developped model of the actuators.
+
+Conclusions:
+------------
+
+- A fine tuning of the global EKF has finally be found. It allows for the embedded 
+  wave estimator afterward to estimate, in the good manner, the dynamics at low frequency
+  of the ship corresponding to the one to send to the controller.
+
+- The embedded PDF-Controller allows to stabilize well the ship subject to random-noise
+  heading perturbations due to waves. The performance are quite remarquable even in presence
+  of these said perturbations: response time, rejection of the wave perturbation and damping
+  are very good. Good online estimation of the dynamics parameters of the wave model.
+
+- The Integrated Line-Of-Sight (ILOS) Guidance algorithm performs well, allowing to produce
+  a smooth heading aimed trajectory profile based on realistic features such as the maximal
+  doable rudder angle, the rudder rate reachable..etc.
+
+- In the previous Simulators, decreasing the saturation of the rudder rate angle would have
+  resulted in a degradation of the system response. However, by improving the Guidance algorithm
+  by using a model as a reference as well as integration term and realistic constraint to produce
+  a smooth trajectory, even with the use of very stringent constraints on the rudder rate, the 
+  heading is respected and the system stays stable.
+
+- One sees that the negative point however, is that by increasing the values of the input of 
+  the white noise for wave perturbation, by reaching around +-15°/s of perturbations and using
+  the PDF-Controller, the output diverges. However, by switching to the use of the order 3
+  controller used thanks to the H_Infinity synthesis, the system is quite stable even in presence
+  of very high disturbing heading wave.
+  
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+

@@ -1,6 +1,5 @@
 % This script serves as a mean to model the contribution of the wind to the
-% perturbation model.
-% See Guidance & Control of ships page 91/494.
+% perturbation model as a torque perturbation.
 
 % Air density:
 Density_Air = 1.225;

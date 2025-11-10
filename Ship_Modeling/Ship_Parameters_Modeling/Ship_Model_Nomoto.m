@@ -263,7 +263,9 @@ elseif Delta_Equation_Time_Constant == 0
     Time_Constant_1 = Time_Constant_Equation_2/2;
     Time_Constant_2 = Time_Constant_1;
 else
-    error('Time cannot be imaginary.');
+    warning('Delta of equation is negative.');
+    Time_Constant_1 = (Time_Constant_Equation_2 + 1i*sqrt(-Delta_Equation_Time_Constant))/2;
+    Time_Constant_2 = (Time_Constant_Equation_2 - 1i*sqrt(-Delta_Equation_Time_Constant))/2;
 end
 % Define the static gain 'K_r':
 Static_Gain = (Coriolis_Centripetal_21*Control_Inputs_Rudder_11 - Coriolis_Centripetal_11*Control_Inputs_Rudder_21)/...

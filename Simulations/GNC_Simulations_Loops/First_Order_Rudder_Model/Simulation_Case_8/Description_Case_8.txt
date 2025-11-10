@@ -1,4 +1,4 @@
-Composition of the 'Simulation_Case_6' closed loop simulation:
+Composition of the 'Simulation_Case_8' closed loop simulation:
 
 - The embedded final Guidance algorithm based on Waypoints following.
 - The Control algorithm based on PD-Filtered control. No blocks, only embedded functions.

@@ -2,7 +2,6 @@
 % the H infinity standard synthesis of the controller.
 
 % Initial corrector order reduction:
-Degrees_Of_Freedom_Synthesis = 2;
 Order_Corrector_Aimed = 3;
 figure;
 bode(Controller); 
@@ -62,9 +61,10 @@ Measurement_Matrix_Controller_Nominal = Measurement_Matrix_Controller_After_Redu
 Input_Measurement_Matrix_Controller_Nominal = Input_Measurement_Matrix_Controller_After_Reduction;
 Controller = Corrector_After_Reduction;
 Tranfer_Functions_Controller = tf(Controller);
+Degrees_Of_Freedom_Synthesis = length(Controller);
+sprintf('The H_Infinity controller synthesis is of DoF number %i.',Degrees_Of_Freedom_Synthesis)
 % As the synthesis has been done using 2 DoF:
 for index_order_synthesis = 1:length(Tranfer_Functions_Controller)
-    sprintf('The synthesis is of DoF 2.')
     % Numerators evaluations:
     eval(sprintf('Numerator_Controller_Function_%i = Tranfer_Functions_Controller.Numerator{index_order_synthesis};', index_order_synthesis));
     % Denominators evaluations:

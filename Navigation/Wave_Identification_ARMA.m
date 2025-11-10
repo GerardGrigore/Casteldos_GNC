@@ -101,9 +101,10 @@ elseif Delta_Discriminant == 0
     Root_Discrete_Transform_2 = Root_Discrete_Transform_1;
 
 elseif Delta_Discriminant < 0
-    Root_Discrete_Transform_1 = (-Identification_Parameter_1_ARMA + 1i*sqrt(abs(Delta_Discriminant)))/(2);
-    Root_Discrete_Transform_2 = (-Identification_Parameter_1_ARMA - 1i*sqrt(abs(Delta_Discriminant)))/(2);
-
+    % Root_Discrete_Transform_1 = (-Identification_Parameter_1_ARMA + 1i*sqrt(abs(Delta_Discriminant)))/(2);
+    % Root_Discrete_Transform_2 = (-Identification_Parameter_1_ARMA - 1i*sqrt(abs(Delta_Discriminant)))/(2);
+    Root_Discrete_Transform_1 = (-Identification_Parameter_1_ARMA + 1i*sqrt(-Delta_Discriminant))/(2);
+    Root_Discrete_Transform_2 = (-Identification_Parameter_1_ARMA - 1i*sqrt(-Delta_Discriminant))/(2);
 end
 
 % Continuous roots of the equation:

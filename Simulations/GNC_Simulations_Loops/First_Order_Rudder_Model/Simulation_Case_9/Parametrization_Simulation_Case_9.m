@@ -2,21 +2,21 @@ clear all;
 close all;
 clc;
 
-% Parametrization script associated with the 'Simulator_Case_8' Simulink
+% Parametrization script associated with the 'Simulator_Case_9' Simulink
 % model. The main features of this case are:
 
-% * Guidance Waypoints-based algorithm.
+% * Guidance Line of Sight (LOS) Waypoints-based algorithm.
 % * Wave environnement switched to continuous instead of discrete (physics
 %   is continuous).
 % * Creation of an online hydrodynamics coefficients estimation due to
 %   velocity LPV model adoption.
-% * Implementation of a time-varying PDF Controller based on the estimator
-%   of hydrodynamics parameters and velocity LPV model.
+% * Implementation of an order three controller synthetized using the
+%   standard H_Infinity method and stochastic optimization.
 % * LPV in velocity ship model implementation.
 % * Profile of nom-velocity creation.
-% * Complexification of the EKF incorporating Yaw rates measruement and non
-%   constant velocity. Addition of the input transfert function of the ship
-%   in the model. Fine tuning of the covariance matrices.
+% * Simplification of the EKF Algorithm in order to just incorporate the
+%   velocity and not accelations anymore. Simplification of the model of
+%   the sensors, using only additive noise generation on the data.
 % * Modification of the Kalman Filter Observer covariance matrices.
 
 % ---Enter the path of the root Casteldos_GNC_Software folder:-------
@@ -26,11 +26,13 @@ Path_Casteldos_GNC_Software = "C:\Users\gerar\Documents\GitHub\";
 % Discrete time features:
 Time_Period_Sampling = 0.1;
 Discretization_Method = char('tustin');
-Time_Guidance_Sampling = 20; % Guidance algorithm sampling time.
 
 % Parameters importation:
 % Parameters of the ship, hydrodynamics coefficients and Nomoto's transfer functions:
 run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Ship_Modeling\Ship_Parameters_Modeling\Ship_Model_Nomoto.m");
+% H_Infinity synthesis data:
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\H_Infinity_Synthesis\Standard_H_Infinity_Tuning\Standard_H_Infinity_Controller_Tuning.m");
+run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\H_Infinity_Synthesis\Standard_H_Infinity_Tuning\Aposteriori_Corrector_Order_Reduction.m");
 % PIDF Synthesis launch:
 run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\PID\Synthesis_Tuning\PID_Tuning_Case_2.m");
 % Wind generation:
@@ -41,12 +43,11 @@ run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Environment\Waves\Waves_Model.m
 run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Guidance\Trajectories\Ile_De_La_Nadiere\Mission_Waypoint_Generation_In_ENU.m");
 % Linear actuator features:
 run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Actuators\Linear_Actuator\Linear_Actuator_Features.m");
-% Velocity profile creation for this simulator case 8:
-run(Path_Casteldos_GNC_Software + "Casteldos_GNC\Simulations\GNC_Simulations_Loops\First_Order_Rudder_Model\Simulation_Case_8\Velocity_Profile_Norm_Case_8.m");
 
 % Repositories sourcing for algorithms:
 % Guidance function:
 addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Guidance\Guidance_Algorithms\Waypoints_Based"));
+addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Guidance\Guidance_Algorithms\Integrated_Line_Of_Sight"));
 % LLA conversion to ENU coordinates function:
 addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Guidance\Trajectories\Ile_De_La_Nadiere"));
 % Wind generator and estimator:
@@ -63,6 +64,8 @@ addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\
 addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Actuators\Linear_Actuator"));
 % Ship LPV functions:
 addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Ship_Modeling\Ship_Parameters_Modeling"));
+% H_Infinity synthesis data:
+addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\H_Infinity_Synthesis\Standard_H_Infinity_Tuning"));
 
 % Initial states declaration:
 Reference_Point_Port_Mahon = [43.059023,3.002915,0];
@@ -75,5 +78,3 @@ Desired_Year_IGRF = decyear('31-December-2024','dd-mmm-yyyy');
 
 % Declination of Sigean zone:
 Declination_Sigean = 2.116*(pi/180);
-
-

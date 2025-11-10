@@ -31,7 +31,7 @@ Time_Integration = Time_Sampling;
 % pulsation will be very high and inacurate, these values shall not be took in
 % consideration. Need to way for around 500 seconds to be sure that the
 % identification went well.
-% Wave_Pulsation_Identified = 0.7;
+% Wave_Pulsation_Identified = 0.6;
 if Time_Current > 550
     if isempty(Identified_Wave_Pulsation)
         Identified_Wave_Pulsation = Wave_Pulsation_Identified;
@@ -59,16 +59,21 @@ Noise_State_Matrix = [0 0 0;
                       0 0 Time_Integration];
 
 % State model covariance matrix 'Q': must be better estimated.
-Sigma_Heading_Wave = deg2rad(20.0); 
+% Working:
+% Sigma_Heading_Wave = deg2rad(20.0); 
+% Sigma_Rate_Heading = deg2rad(0.5);    
+% Sigma_Bias = deg2rad(0.01); 
+Sigma_Heading_Wave = deg2rad(50.0); 
 Sigma_Rate_Heading = deg2rad(0.5);    
-Sigma_Bias = deg2rad(0.01);           
+Sigma_Bias = deg2rad(0.01); 
 State_Model_Covariance_Matrix = diag([Sigma_Heading_Wave^2,Sigma_Rate_Heading^2,Sigma_Bias^2]);
 
 % Measurement model definition:
 % -----------------------------
 Measurement_Matrix = [0 1 1 0 0];
 % Measurement model covariance matrix 'R':
-Sigma_Heading_Estimated = deg2rad(2);
+% Sigma_Heading_Estimated = deg2rad(2); % OK.
+Sigma_Heading_Estimated = deg2rad(15);
 Measurement_Model_Covariance_Matrix = Sigma_Heading_Estimated^2;
 Measurement_Vector_Current = Heading_Total_Observed_Current;
 

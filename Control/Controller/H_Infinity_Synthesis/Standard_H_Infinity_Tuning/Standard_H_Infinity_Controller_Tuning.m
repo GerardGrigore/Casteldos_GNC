@@ -1,7 +1,3 @@
-clear all;
-close all;
-clc;
-
 % This script serves as a mean to tune the standard H infinity controller.
 % Standard H infinity control synthesis is applied to the ship plant augmented 
 % by an additive wave perturbation. All the tuning will be done considering the
