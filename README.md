@@ -57,7 +57,7 @@ For each subfolder corresponding to a simulation case number i, the following el
   in successive simulation cases i + 1.
 
 **For a complete and full description of the algorithms, mathematical models and simulators, technical descriptions and justification files will be uploaded soon.**
-**For a reprezentative simulation case, aim for the Simulator_Case_8. The model including non linearities is a good example of the solutions adopted so far in terms of controller tuning, Kalman filter design, two staged recursive least square online identification algorithm and modeling.**
+**For a reprezentative simulation case, aim for the Simulator_Case_9. The model including non linearities is a good example of the solutions adopted so far in terms of embedded Integrated Line-Of-Sight (ILOS) Guidance, controller tuning, Kalman filter design, two staged recursive least square online identification algorithm and modeling. H_Infinity synthesis also allowed for the design of a robust controller stabilizing the ship even in presence of very high sensor noise perturbation.**
 
 
 ## Evolutions :arrow_upper_right:
