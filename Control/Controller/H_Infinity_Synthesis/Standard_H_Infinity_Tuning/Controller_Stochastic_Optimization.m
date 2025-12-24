@@ -31,6 +31,7 @@ global Static_Gain_Ship_Uncertain;
 global Time_Constant_Ship_Uncertain;
 global Omega_Wave_Pulsation_Uncertain;
 global Damping_Wave_Uncertain;
+global Is_Reduced_Model;
 
 % Fixed parameters of the filters:
 Gain_Static_Filter_1 = 1000;
@@ -39,12 +40,12 @@ Gain_Static_Filter_2 = 0.01;
 Gain_Infinity_Filter_2 = 10000;
 
 % Initialization of the filter parameters to optimize:
-Pulsation_Unit_Gain_Filter_1 = 0.03275;
-Pulsation_Unit_Gain_Filter_2 = 1.741;
-Pulsation_Unit_Gain_Filter_3 = 348;
-Gain_Static_Filter_3 = 0.01501;
-Gain_Infinity_Filter_3 = 0.5025;
-Gain_Static_Filter_4 = 0.5167;
+Pulsation_Unit_Gain_Filter_1 = 0.07752;
+Pulsation_Unit_Gain_Filter_2 = 2.528;
+Pulsation_Unit_Gain_Filter_3 = 238.4;
+Gain_Static_Filter_3 = 0.01205;
+Gain_Infinity_Filter_3 = 0.1199;
+Gain_Static_Filter_4 = 0.367;
 
 % Bounds on the searching for the parameters:
 Lower_Bound_Coefficient = 0.1;
@@ -60,6 +61,8 @@ Options_Optimization = optimoptions('particleswarm','FunctionTolerance',Toleranc
 
 % Select the type of model to be used for the synthesis:
 Is_Uncertain_Model_Synthesis = 1;
+Is_Reduced_Model = 0;
+
 % Uncertain parameters declaration:
 Static_Gain_Ship_Nominal_Uncertainty = 0.6043;
 Static_Gain_Ship_Uncertain_Interval = [0.6 5];
@@ -73,7 +76,6 @@ Static_Gain_Ship_Uncertain = ureal("Static_Gain_Ship_Uncertain",Static_Gain_Ship
 Time_Constant_Ship_Uncertain = ureal("Time_Constant_Ship_Uncertain",Time_Constant_Ship_Nominal_Uncertainty,"Range",Time_Constant_Ship_Uncertain_Interval);
 Omega_Wave_Pulsation_Uncertain = ureal("Omega_Wave_Pulsation_Uncertain",Omega_Wave_Nominal_Uncertainty,"Range",Omega_Wave_Uncertain_Interval);
 Damping_Wave_Uncertain = ureal("Damping_Wave_Uncertain",Damping_Wave_Nominal_Uncertainty,"Range",Damping_Wave_Uncertainty_Interval);
-    
 
 % Perfect Guidance parameters for the synthesis:
 % Heading step aimed:
@@ -81,7 +83,7 @@ Step_Heading_Aimed = 30*(pi/180);
 % Perturbation step:
 Perturbation_Step = 10*(pi/180);
 % Heading measurement noise:
-Heading_Variance_Noise = 10*(pi/180);
+Heading_Variance_Noise = 1*(pi/180);
 
 % Stochastic optimization:
 Number_Iterations_Count = 0;

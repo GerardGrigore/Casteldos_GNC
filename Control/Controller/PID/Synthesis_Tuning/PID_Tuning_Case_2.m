@@ -56,7 +56,8 @@ Controller_PDF_Classical_Discrete = c2d(Controller_PDF_Classical_Continuous,Time
 % -----------------------
 % Determine the gains:
 % The Proportional and Derivative gains have been previously determined.
-Gain_Integral = (Pulsation_Natural^3/10)*(Time_Constant_Total/Static_Gain_Nomoto);
+Integral_Parameter_Tuning = 10;
+Gain_Integral = (Pulsation_Natural^3/Integral_Parameter_Tuning)*(Time_Constant_Total/Static_Gain_Nomoto);
 Time_Integral = Gain_Proportional/Gain_Integral;
 % Transfer functions:
 Controller_PID = Gain_Proportional + Gain_Derivative*s + Gain_Integral/s;
@@ -119,26 +120,26 @@ figure;
 Closed_Loop_Transfer_PIDF_Controller = (Controller_PIDF_Continuous*Heading_On_Rudder_Transfer_First_Order)/...
                                        (1 + Controller_PIDF_Continuous*Heading_On_Rudder_Transfer_First_Order);
 bode(Closed_Loop_Transfer_PIDF_Controller);
-title('Bode diagram PIDF Controller.');
+title('Bode diagram PIDF Controller closed loop.');
 % PID Controller:
 figure;
 Closed_Loop_Transfer_PID_Controller = (Controller_PID*Heading_On_Rudder_Transfer_First_Order)/...
                                       (1 + Controller_PID*Heading_On_Rudder_Transfer_First_Order);
 bode(Closed_Loop_Transfer_PID_Controller);
-title('Bode diagram PID Controller.');
+title('Bode diagram PID Controller closed loop.');
 % PDF Controller:
 figure;
 Closed_Loop_Transfer_PDF_Controller = (Controller_PDF_Continuous*Heading_On_Rudder_Transfer_First_Order)/...
                                       (1 + Controller_PDF_Continuous*Heading_On_Rudder_Transfer_First_Order);
 bode(Closed_Loop_Transfer_PDF_Controller);
-title('Bode diagram PDF Controller.');
+title('Bode diagram PDF Controller closed loop.');
 
 % Bandwidth of the closed-loop to be determined:
 figure;
 Closed_Loop_Transfer_PDF_Controller_Classical = (Controller_PDF_Classical_Continuous*Heading_On_Rudder_Transfer_First_Order)/...
                                                 (1 + Controller_PDF_Classical_Continuous*Heading_On_Rudder_Transfer_First_Order);
 bode(Closed_Loop_Transfer_PDF_Controller_Classical);
-title('Bode diagram PDF Classical Controller.');
+title('Bode diagram PDF Classical Controller closed loop.');
 
 
 

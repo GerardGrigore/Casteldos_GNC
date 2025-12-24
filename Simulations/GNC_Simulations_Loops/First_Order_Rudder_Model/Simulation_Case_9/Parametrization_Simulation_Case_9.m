@@ -68,13 +68,9 @@ addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Ship_Modeling\Ship_
 addpath(genpath(Path_Casteldos_GNC_Software + "Casteldos_GNC\Control\Controller\H_Infinity_Synthesis\Standard_H_Infinity_Tuning"));
 
 % Initial states declaration:
-Reference_Point_Port_Mahon = [43.059023,3.002915,0];
 Position_Initial_X = Waypoints_X(1);
 Position_Initial_Y = Waypoints_Y(1);
-Heading_Initial = -65*pi/180;
-
-% Desired decimal year study:
-Desired_Year_IGRF = decyear('31-December-2024','dd-mmm-yyyy');
+Velocity_Norm_Ship_Initial = 6/3.6;
 
 % Declination of Sigean zone:
 Declination_Sigean = 2.116*(pi/180);

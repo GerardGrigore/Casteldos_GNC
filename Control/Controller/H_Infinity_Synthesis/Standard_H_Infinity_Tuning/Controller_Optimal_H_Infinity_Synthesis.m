@@ -47,25 +47,25 @@ end
 Tustin_Sampling = 2/Time_Sampling;
 
 % Coefficient gains:
-Numerator_Coefficient_Controller_1_1 = 4.2512e-05;
-Numerator_Coefficient_Controller_1_2 = -1.0304;
-Numerator_Coefficient_Controller_1_3 = -1.8663;
-Numerator_Coefficient_Controller_1_4 = -0.1164;
+Numerator_Coefficient_Controller_1_1 = -4.5801e-05;
+Numerator_Coefficient_Controller_1_2 = -1.0952;
+Numerator_Coefficient_Controller_1_3 = -0.1406;
+Numerator_Coefficient_Controller_1_4 = -2.4047e-06;
 
-Numerator_Coefficient_Controller_2_1 = 6.0170e-05;
-Numerator_Coefficient_Controller_2_2 = -2.2543;
-Numerator_Coefficient_Controller_2_3 = -3.9369;
-Numerator_Coefficient_Controller_2_4 = -6.4214e-05;
+Numerator_Coefficient_Controller_2_1 = -9.4601e-05;
+Numerator_Coefficient_Controller_2_2 = -2.8440;
+Numerator_Coefficient_Controller_2_3 = -3.7171e-05;
+Numerator_Coefficient_Controller_2_4 = -1.3711e-09;
 
 Denominator_Coefficient_Controller_1_1 = 1;
-Denominator_Coefficient_Controller_1_2 = 3.2588;
-Denominator_Coefficient_Controller_1_3 = 3.7817;
-Denominator_Coefficient_Controller_1_4 = 1.9916;
+Denominator_Coefficient_Controller_1_2 = 1.5800;
+Denominator_Coefficient_Controller_1_3 = 1.2350;
+Denominator_Coefficient_Controller_1_4 = 6.8975e-05;
 
 Denominator_Coefficient_Controller_2_1 = 1;
-Denominator_Coefficient_Controller_2_2 = 3.2588;
-Denominator_Coefficient_Controller_2_3 = 3.7817;
-Denominator_Coefficient_Controller_2_4 = 1.9916;
+Denominator_Coefficient_Controller_2_2 = 1.5800;
+Denominator_Coefficient_Controller_2_3 = 1.2350;
+Denominator_Coefficient_Controller_2_4 = 6.8975e-05;
 
 % Coefficients calculation:
 % First degree of freedom corrector:

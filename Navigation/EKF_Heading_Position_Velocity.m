@@ -50,10 +50,14 @@ States_Initial_Model = [Velocity_Current;...
 % We then define the process noise covariance matrix refered as the 'Q'
 % matrix in estimation. This has a link with how one is confident about the
 % used model:
-% Variance_Velocity = 3;
+% Initial working tuning:
+% Variance_Velocity = 0.001;
+% Variance_Rate_Heading = 0.01*(pi/180);
+% Variance_Bias = 10*(pi/180); 
+% Tuning aligned with the next KF, the wave Observer:
 Variance_Velocity = 0.001;
-Variance_Rate_Heading = 0.01*(pi/180);
-Variance_Bias = 10*(pi/180); 
+Variance_Rate_Heading = 0.5*(pi/180);
+Variance_Bias = 0.01*(pi/180); 
 Process_Model_Covariance_Matrix = diag([Variance_Velocity^2,Variance_Rate_Heading^2,Variance_Bias^2]);
 
 % Noise model matrix 'G':

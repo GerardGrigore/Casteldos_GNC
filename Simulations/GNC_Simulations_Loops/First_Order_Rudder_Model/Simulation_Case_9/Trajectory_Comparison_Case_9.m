@@ -1,4 +1,5 @@
 % Post Mission Analysis of the 'Simulator_Case_9' model:
+close all;
 
 % Simulated positions along the X-Axis and Y-Axis of the Body-Fixed
 % frame (positions of the ship):
@@ -21,6 +22,18 @@ Heading_Filtered_Fused = out.Heading_Kalman_Filtered.Data;
 Time_Heading_Filtered = out.Heading_Kalman_Filtered.Time;
 Heading_Filtered_Low_Frequency = out.Heading_Filtered_Waves.Data;
 Time_Heading_Filtered_Low_Frequency = out.Heading_Filtered_Waves.Time;
+
+% Estimated pulsation and damping of the waves:
+Pulsation_Wave_Estimated = out.Pulsation_Wave_Estimated.Data;
+Time_Pulsation_Wave_Estimated = out.Pulsation_Wave_Estimated.Time;
+Damping_Wave_Estimated = out.Damping_Wave_Estimated.Data;
+Time_Damping_Wave_Estimated = out.Damping_Wave_Estimated.Time;
+
+% Wave heading estimation:
+Heading_Wave_Input = out.Heading_Wave_Simulated_Input.Data;
+Time_Heading_Wave_Input = out.Heading_Wave_Simulated_Input.Time;
+Heading_Wave_Estimated = out.Heading_Wave_Estimated.Data;
+Time_Heading_Wave_Estimated = out.Heading_Wave_Estimated.Time;
 
 % Initially aimed trajectory:
 % Waypoints in LLA frame:
@@ -94,10 +107,35 @@ xlabel('Time of measurements (s)');
 ylabel('Headings (rad)');
 title('Headings in function of time');
 
+figure;
+% Pulsation and damping of waves:
+plot(Time_Pulsation_Wave_Estimated,Pulsation_Wave_Estimated,'red');
+hold on;
+yline(Pulsation_Wave,'black');
+legend('Estimated pulsation of the waves','Simulated pulsation of the waves');
+xlabel('Time (seconds)');
+ylabel('Pulsation (rad/s)');
+title('Estimation of the pulsation of the waves and comparison with simulation input.');
 
+figure;
+% Pulsation and damping of waves:
+plot(Time_Damping_Wave_Estimated,Damping_Wave_Estimated,'red');
+hold on;
+yline(Damping_Factor_Waves,'black');
+legend('Estimated damping of the waves','Simulated damping of the waves');
+xlabel('Time (seconds)');
+ylabel('Damping coefficient (rad/s)');
+title('Estimation of the damping of the waves and comparison with simulation input.');
 
-
-
+figure;
+% Wave heading estimation:
+plot(Time_Heading_Wave_Input,Heading_Wave_Input);
+hold on;
+plot(Time_Heading_Wave_Estimated,Heading_Wave_Estimated);
+legend('Generated input environnement heading wave','Estimated heading due to waves');
+xlabel('Time (seconds)');
+ylabel('Heading of the waves (rad/s)');
+title('Estimation of the heading of the waves and comparison with simulation input.');
 
 
 

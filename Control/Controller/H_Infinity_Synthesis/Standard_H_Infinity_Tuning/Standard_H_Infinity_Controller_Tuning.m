@@ -3,6 +3,10 @@
 % by an additive wave perturbation. All the tuning will be done considering the
 % continuous models of the ship and wave.
 
+% clear all
+% close all
+% clc
+
 % Plant and System definition:
 % ----------------------------
 % Physical parameters:
@@ -19,7 +23,8 @@ State_Matrix_Ship_Wave_Nominal = [0 1 0 0;
 Perturbation_Input_Matrix_Nominal = [0;Omega_Wave_Nominal^2;0;0];
 Input_Matrix_Nominal = [0;0;0;Static_Gain_Ship_Nominal/Time_Constant_Ship_Nominal];
 Input_Matrix_Nominal_Global = [Input_Matrix_Nominal Perturbation_Input_Matrix_Nominal];
-Measurement_Matrix_Ship_Wave_Nominal = [0 1 1 0];
+% Measurement_Matrix_Ship_Wave_Nominal = [0 1 1 0];
+Measurement_Matrix_Ship_Wave_Nominal = [0 0 1 0];
 Input_Measurement_Matrix_Global_Nominal = [0 0];
 Ship_Wave_State_Space = ss(State_Matrix_Ship_Wave_Nominal,...
                            Input_Matrix_Nominal_Global,...
@@ -28,8 +33,8 @@ Ship_Wave_State_Space = ss(State_Matrix_Ship_Wave_Nominal,...
 
 % H_infinity synthesis:
 % ---------------------
-Number_Of_Synthetized_Controllers = 8;
-Selected_Synthesis_Tuning_Number = 8; 
+Number_Of_Synthetized_Controllers = 11;
+Selected_Synthesis_Tuning_Number = 11; 
 
 if Selected_Synthesis_Tuning_Number == 1
     % Manual tuning of the filters - Tuning n° 1:
@@ -189,6 +194,69 @@ if Selected_Synthesis_Tuning_Number == 8
     Pulsation_Unit_Gain_Filter_3 = 1012;
     % Filter 4:
     Gain_Static_Filter_4 = 0.5529;
+end
+
+if Selected_Synthesis_Tuning_Number == 9
+    % Tuning n°9:
+    % Features: Sysnthetized controller using uss model and allowing
+    % higher response time/overshoot, but aiming for higher damping factor
+    % (around 0.3 minimum).
+    % Filter 1:
+    Gain_Infinity_Filter_1 = 0.5;
+    Gain_Static_Filter_1 = 1000;
+    Pulsation_Unit_Gain_Filter_1 = 3.275;
+    % Filter 2:
+    Gain_Infinity_Filter_2 = 10000;
+    Gain_Static_Filter_2 = 0.01;
+    Pulsation_Unit_Gain_Filter_2 = 0.01741;
+    % Filter 3:
+    Gain_Infinity_Filter_3 = 0.008225;
+    Gain_Static_Filter_3 = 0.07177;
+    Pulsation_Unit_Gain_Filter_3 = 3.48;
+    % Filter 4:
+    Gain_Static_Filter_4 = 0.005167;
+end
+
+if Selected_Synthesis_Tuning_Number == 10
+    % Tuning n°10:
+    % Features: Sysnthetized controller using uss model and allowing
+    % lower response time/overshoot, but aiming for higher damping factor
+    % (around 0.3 minimum).
+    % Filter 1:
+    Gain_Infinity_Filter_1 = 0.5;
+    Gain_Static_Filter_1 = 1000;
+    Pulsation_Unit_Gain_Filter_1 = 13.47;
+    % Filter 2:
+    Gain_Infinity_Filter_2 = 10000;
+    Gain_Static_Filter_2 = 0.01;
+    Pulsation_Unit_Gain_Filter_2 = 0.02949;
+    % Filter 3:
+    Gain_Infinity_Filter_3 = 0.0005295;
+    Gain_Static_Filter_3 = 0.006914;
+    Pulsation_Unit_Gain_Filter_3 = 103.1;
+    % Filter 4:
+    Gain_Static_Filter_4 = 5.103e-05;
+end
+
+if Selected_Synthesis_Tuning_Number == 11
+    % Tuning n°11:
+    % Features: Sysnthetized controller using nominal ss model bu another
+    % state-space reprezentation involving only a measurement on the low
+    % frequency heading.
+    % Filter 1:
+    Gain_Infinity_Filter_1 = 0.5;
+    Gain_Static_Filter_1 = 1000;
+    Pulsation_Unit_Gain_Filter_1 = 0.07752;
+    % Filter 2:
+    Gain_Infinity_Filter_2 = 10000;
+    Gain_Static_Filter_2 = 0.01;
+    Pulsation_Unit_Gain_Filter_2 = 2.528;
+    % Filter 3:
+    Gain_Infinity_Filter_3 = 0.1199;
+    Gain_Static_Filter_3 = 0.01205;
+    Pulsation_Unit_Gain_Filter_3 = 238.4;
+    % Filter 4:
+    Gain_Static_Filter_4 = 0.367;
 end
 
 % Standard P(s) plant reprezentation in the Model named

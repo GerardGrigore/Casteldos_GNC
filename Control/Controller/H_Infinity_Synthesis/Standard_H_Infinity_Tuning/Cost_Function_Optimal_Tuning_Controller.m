@@ -33,6 +33,7 @@ global Static_Gain_Ship_Uncertain;
 global Time_Constant_Ship_Uncertain;
 global Omega_Wave_Pulsation_Uncertain;
 global Damping_Wave_Uncertain;
+global Is_Reduced_Model;
 
 % Initialization of the parameters of the filter:
 Pulsation_Unit_Gain_Filter_1 = 10^(Optimal_Vector(1));
@@ -54,23 +55,37 @@ if ~Is_Uncertain_Model_Synthesis
     % Nominal model:
     % State reprezentation of the plant P(s) in Simulink model 'Standard_H_Infinity_Full_Order_Synthesis':
     % Nominal model:
-    Static_Gain_Ship_Nominal = 0.6043;
-    Time_Constant_Ship_Nominal = -5.2097;
-    Omega_Wave_Nominal = 0.6;
-    Damping_Wave_Nominal = 0.1;
-    State_Matrix_Ship_Wave_Nominal = [0 1 0 0;
-                                     -Omega_Wave_Nominal^2 -2*Omega_Wave_Nominal*Damping_Wave_Nominal 0 0;
-                                     0 0 0 1;
-                                     0 0 0 -1/Time_Constant_Ship_Nominal];
-    Perturbation_Input_Matrix_Nominal = [0;Omega_Wave_Nominal^2;0;0];
-    Input_Matrix_Nominal = [0;0;0;Static_Gain_Ship_Nominal/Time_Constant_Ship_Nominal];
-    Input_Matrix_Nominal_Global = [Input_Matrix_Nominal Perturbation_Input_Matrix_Nominal];
-    Input_Measurement_Matrix_Global_Nominal = [0 0];
-    Measurement_Matrix_Ship_Wave_Nominal = [0 1 1 0];
-    Ship_Wave_State_Space = ss(State_Matrix_Ship_Wave_Nominal,...
-                               Input_Matrix_Nominal_Global,...
-                               Measurement_Matrix_Ship_Wave_Nominal,...
-                               Input_Measurement_Matrix_Global_Nominal);
+    if ~Is_Reduced_Model
+        Static_Gain_Ship_Nominal = 0.6043;
+        Time_Constant_Ship_Nominal = -5.2097;
+        Omega_Wave_Nominal = 0.6;
+        Damping_Wave_Nominal = 0.1;
+        State_Matrix_Ship_Wave_Nominal = [0 1 0 0;
+            -Omega_Wave_Nominal^2 -2*Omega_Wave_Nominal*Damping_Wave_Nominal 0 0;
+            0 0 0 1;
+            0 0 0 -1/Time_Constant_Ship_Nominal];
+        Perturbation_Input_Matrix_Nominal = [0;Omega_Wave_Nominal^2;0;0];
+        Input_Matrix_Nominal = [0;0;0;Static_Gain_Ship_Nominal/Time_Constant_Ship_Nominal];
+        Input_Matrix_Nominal_Global = [Input_Matrix_Nominal Perturbation_Input_Matrix_Nominal];
+        Input_Measurement_Matrix_Global_Nominal = [0 0];
+        % Measurement_Matrix_Ship_Wave_Nominal = [0 1 1 0];
+        Measurement_Matrix_Ship_Wave_Nominal = [0 0 1 0];
+        Ship_Wave_State_Space = ss(State_Matrix_Ship_Wave_Nominal,...
+            Input_Matrix_Nominal_Global,...
+            Measurement_Matrix_Ship_Wave_Nominal,...
+            Input_Measurement_Matrix_Global_Nominal);
+    else
+        Static_Gain_Ship_Nominal = 0.6043;
+        Time_Constant_Ship_Nominal = -5.2097;
+        State_Matrix_Ship_Wave_Nominal = [0 1;
+                                          0 -1/Time_Constant_Ship_Nominal];
+        Perturbation_Input_Matrix_Nominal = [0;1/Time_Constant_Ship_Nominal];
+        Input_Matrix_Nominal = [0;Static_Gain_Ship_Nominal/Time_Constant_Ship_Nominal];
+        Input_Matrix_Nominal_Global = [Input_Matrix_Nominal Perturbation_Input_Matrix_Nominal];
+        Measurement_Matrix_Ship_Wave_Nominal = [1 0];
+        Input_Measurement_Matrix_Global_Nominal = [0 0];
+    end
+    assignin('base', 'Ship_Wave_State_Space', Ship_Wave_State_Space);
     [State_Matrix_Standard_P_Optimization,...
      Input_Matrix_Standard_P_Optimization,...
      Measurement_Matrix_Standard_P_Optimization,...
@@ -118,7 +133,8 @@ else
     Input_Matrix_Nominal = [0;0;0;Static_Gain_Ship_Uncertain/Time_Constant_Ship_Uncertain];
     Input_Matrix_Nominal_Global = [Input_Matrix_Nominal Perturbation_Input_Matrix_Nominal];
     Input_Measurement_Matrix_Global_Nominal = [0 0];
-    Measurement_Matrix_Ship_Wave_Nominal = [0 1 1 0];
+    % Measurement_Matrix_Ship_Wave_Nominal = [0 1 1 0];
+    Measurement_Matrix_Ship_Wave_Nominal = [0 0 1 0];
     Ship_Wave_State_Space = ss(State_Matrix_Ship_Wave_Nominal,...
                                Input_Matrix_Nominal_Global,...
                                Measurement_Matrix_Ship_Wave_Nominal,...
@@ -263,18 +279,18 @@ Delta_Margin_Optimization = 1/max(Magnitude_Optimization);
 
 % Deifnition of the criteria to be respected:
 % Overshoot of the Heading in output:
-Overshoot_Maximal = 4/100; % 4% maximal overshoot allowed
+Overshoot_Maximal = 3/100;
 Reference_Function_1 = (max(Heading_Reference)-Step_Heading_Aimed*(1 + Overshoot_Maximal))/(Overshoot_Maximal);
 % Time response at 4% lower than 15 seconds:
 Overshoot_Maximal_Time = 15;
-Overshoot_Maximal_Time_Percent = 4/100;
+Overshoot_Maximal_Time_Percent = 2/100;
 Reference_Function_3 = max(abs(Heading_Reference(Overshoot_Maximal_Time/Step_Time_Optimization:Time_Horizon_Optimization/Step_Time_Optimization)-Step_Heading_Aimed))/(Step_Heading_Aimed*Overshoot_Maximal_Time_Percent)-1;
 % Command Rudder amplitude:
 % Lower than 35°:
 Delta_Rudder_Limit = 35*(pi/180);
 Reference_Function_4 = max(abs(Rudder_Angle_Input_Reference))/Delta_Rudder_Limit-1;                     
 % Perturbation response:
-Time_Constraint_Perturbation = 5; % Lower than 15 seconds.
+Time_Constraint_Perturbation = 30; 
 Perturbation_Function_1 = max(abs(Output_Perturbation_Heading(Time_Constraint_Perturbation/Step_Time_Optimization:Time_Horizon_Optimization/Step_Time_Optimization)))/Perturbation_Step-1;
 % Frequencies and pulsations:
 Delta_Pulsation_Unit_Gain = 5;

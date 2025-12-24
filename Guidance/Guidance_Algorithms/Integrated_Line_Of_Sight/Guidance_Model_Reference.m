@@ -1,6 +1,7 @@
 function [Heading_Desired_Current,...
-          Angular_Rate_Desired_Current] = Guidance_Model_Reference(Heading_Raw_Aimed,...
-                                                                   Time_Sampling)
+          Angular_Rate_Desired_Current,...
+          Angular_Acceleration_Desired_Current] = Guidance_Model_Reference(Heading_Raw_Aimed,...
+                                                                           Time_Sampling)
 
 % Initialization:
 % Persistents for reference model used:
@@ -14,10 +15,10 @@ if isempty(Heading_Desired_Previous)
     Angular_Acceleration_Desired_Previous = 0;
     Heading_Aimed_Previous_Raw = 0;
 end
-Rudder_Rate_Saturation = 5*(pi/180);
-Rudder_Acceleration_Saturation = 9*(pi/180);
+Rudder_Rate_Saturation = 8*(pi/180);
+Rudder_Acceleration_Saturation = 10*(pi/180);
 Damping_Reference_Model = 1; % Smooth.
-Pulsation_Reference_Model = 0.3; % Smaller thant the one of the closed-loop bandwidth.
+Pulsation_Reference_Model = 0.2; % Smaller thant the one of the closed-loop bandwidth.
 
 Jerk_Desired_Current = -(2*Damping_Reference_Model + 1)*Pulsation_Reference_Model*Angular_Acceleration_Desired_Previous - (2*Damping_Reference_Model + 1)*Pulsation_Reference_Model^2*...
                        Rudder_Rate_Desired_Previous + Pulsation_Reference_Model^3*(Heading_Aimed_Previous_Raw - Heading_Desired_Previous);

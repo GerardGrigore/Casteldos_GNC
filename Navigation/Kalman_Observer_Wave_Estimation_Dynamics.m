@@ -15,13 +15,15 @@ function [Heading_Rate_Wave_Estimated_Current,...
                                                                                      Torque_Wind_Estimated_Input,...
                                                                                      Inertia_Ship_Vertical,...
                                                                                      Wave_Pulsation_Identified,...
-                                                                                     Heading_Rate_Estimated_Current_Navigation)
+                                                                                     Heading_Rate_Estimated_Current_Navigation,...
+                                                                                     Damping_Wave_Identified)
 
 % Persistents definition:
 persistent State_Model_Prediction;
 persistent Covariance_Prediction;
 persistent Rudder_Angle_Commanded_Prev;
 persistent Identified_Wave_Pulsation;
+persistent Identified_Wave_Damping;
 
 % Integration step to be aligned with the sampling
 % frequency:
@@ -33,10 +35,16 @@ Time_Integration = Time_Sampling;
 % identification went well.
 % Wave_Pulsation_Identified = 0.6;
 if Time_Current > 550
+    % Pulsation:
     if isempty(Identified_Wave_Pulsation)
         Identified_Wave_Pulsation = Wave_Pulsation_Identified;
     end
     Wave_Pulsation_Estimated = Identified_Wave_Pulsation;
+    % Damping:
+    if isempty(Identified_Wave_Damping)
+        Identified_Wave_Damping = Damping_Wave_Identified;
+    end
+    Damping_Wave_Estimated = Identified_Wave_Damping;
 end
 
 % State model definition:
@@ -59,11 +67,8 @@ Noise_State_Matrix = [0 0 0;
                       0 0 Time_Integration];
 
 % State model covariance matrix 'Q': must be better estimated.
-% Working:
-% Sigma_Heading_Wave = deg2rad(20.0); 
-% Sigma_Rate_Heading = deg2rad(0.5);    
-% Sigma_Bias = deg2rad(0.01); 
-Sigma_Heading_Wave = deg2rad(50.0); 
+% Initial tuning, aligned with the tuning of the previous filter EKF:
+Sigma_Heading_Wave = deg2rad(50); 
 Sigma_Rate_Heading = deg2rad(0.5);    
 Sigma_Bias = deg2rad(0.01); 
 State_Model_Covariance_Matrix = diag([Sigma_Heading_Wave^2,Sigma_Rate_Heading^2,Sigma_Bias^2]);
@@ -72,8 +77,7 @@ State_Model_Covariance_Matrix = diag([Sigma_Heading_Wave^2,Sigma_Rate_Heading^2,
 % -----------------------------
 Measurement_Matrix = [0 1 1 0 0];
 % Measurement model covariance matrix 'R':
-% Sigma_Heading_Estimated = deg2rad(2); % OK.
-Sigma_Heading_Estimated = deg2rad(15);
+Sigma_Heading_Estimated = deg2rad(5);
 Measurement_Model_Covariance_Matrix = Sigma_Heading_Estimated^2;
 Measurement_Vector_Current = Heading_Total_Observed_Current;
 
